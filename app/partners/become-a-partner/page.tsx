@@ -246,7 +246,7 @@ export default function BecomeASponsorPage() {
               {/* Become a Sponsor CTA */}
               <div className="mt-8 flex w-full justify-center">
                 <Link
-                  href="/contact"
+                  href="https://clean-energy.zohobackstage.com/kigali#/sponsors?lang=en"
                   className="rounded-2xl bg-[#003994] px-10 py-4 text-base font-semibold text-white transition hover:bg-[#002b6f]"
                 >
                   Become a Sponsor

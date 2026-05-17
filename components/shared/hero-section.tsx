@@ -478,7 +478,7 @@ export function HeroSection() {
 
   <div className="relative h-[1100px] w-[1100px] opacity-30">
     <Image
-      src="/images/logo_2.png"
+      src="/images/logo_3.png"
       alt="Background Logo Top Left"
       fill
       priority
