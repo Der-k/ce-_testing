@@ -203,6 +203,8 @@ export default function EventOverviewPage() {
             })}
           </div>
 
+
+
           <div className="mt-10 grid gap-10 lg:grid-cols-[1.08fr_0.92fr] lg:items-center">
             <div>
               <p className="text-[13px] font-semibold uppercase tracking-[0.22em] text-[#02026e]">
@@ -253,6 +255,7 @@ export default function EventOverviewPage() {
             </div>
             </div>
 
+
             <div className="relative">
               <div className="overflow-hidden rounded-[24px] border border-[#02026e]/20 bg-white shadow-[0_20px_50px_rgba(2,2,110,0.08)]">
                 <div className="relative aspect-[4/3.2] w-full">
@@ -279,33 +282,7 @@ export default function EventOverviewPage() {
           </div>
         </div>
       </section>
-
-      <SectionShell>
-        <div className="grid gap-12 lg:grid-cols-[1.05fr_0.95fr]">
-          <div>
-            <p className="text-[13px] font-semibold uppercase tracking-[0.22em] text-[#02026e]">
-              Summary
-            </p>
-            <h2 className="font-heading mt-3 text-3xl font-bold tracking-[-0.02em] text-[color:var(--text-main)]-900">
-              {current.summaryTitle}
-            </h2>
-
-            <div className="mt-6 space-y-5 text-base leading-8 text-[color:var(--text-main)]-600">
-              {current.summaryParagraphs.map((paragraph) => (
-                <p key={paragraph}>{paragraph}</p>
-              ))}
-            </div>
-          </div>
-
-          <div className="grid gap-4 sm:grid-cols-2">
-            {current.stats.map((item) => (
-              <StatCard key={item.label} value={item.value} label={item.label} />
-            ))}
-          </div>
-        </div>
-      </SectionShell>
-
-      <SectionShell muted>
+ <SectionShell muted>
   <div className="max-w-3xl">
     <p className="text-[13px] font-semibold uppercase tracking-[0.22em] text-[#02026e]">
       Event Programme
@@ -333,6 +310,72 @@ export default function EventOverviewPage() {
     ))}
   </div>
 </SectionShell>
+<SectionShell className="bg-gradient-to-br from-[#02026e] via-[#0b0b8f] to-[#010150] text-white">
+  <div className="grid gap-12 lg:grid-cols-[1.05fr_0.95fr]">
+    
+    {/* Left Content */}
+    <div>
+      {/* Section Label */}
+      <div className="inline-block">
+        <p className="text-[13px] font-semibold uppercase tracking-[0.22em] text-white">
+          Summary
+        </p>
+
+        <div className="mt-2 h-[2px] w-full rounded-full bg-[#06895b]" />
+      </div>
+
+      {/* Heading */}
+      <div className="mt-3 inline-block">
+        <h2 className="font-heading text-3xl font-bold tracking-[-0.02em] text-white">
+          {current.summaryTitle}
+        </h2>
+
+        <div className="mt-3 h-[3px] w-24 rounded-full bg-[#06895b]" />
+      </div>
+
+      {/* Paragraphs */}
+      <div className="mt-6 space-y-5 text-base leading-8 text-white/90">
+        {current.summaryParagraphs.map((paragraph) => (
+          <p key={paragraph}>{paragraph}</p>
+        ))}
+      </div>
+    </div>
+
+    {/* Stats Grid */}
+    <div className="grid gap-4 sm:grid-cols-2">
+      {current.stats.map((item) => (
+        <div
+          key={item.label}
+          className="
+            group relative overflow-hidden rounded-3xl
+            border border-[#06895b]/30
+            bg-[#06895b]
+            p-6
+            transition-all duration-300
+            hover:-translate-y-1
+            hover:border-[#7fffd4]/40
+            hover:bg-[#079c67]
+          "
+        >
+          {/* subtle glow */}
+          <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+
+          <div className="relative z-10">
+            <p className="text-3xl font-bold tracking-tight text-white">
+              {item.value}
+            </p>
+
+            <div className="mt-3 h-[2px] w-12 rounded-full bg-white/70" />
+
+            <p className="mt-4 text-sm leading-6 text-white/90">
+              {item.label}
+            </p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</SectionShell>     
       <SectionShell>
         <div className="grid gap-12 lg:grid-cols-[0.92fr_1.08fr]">
           <div>

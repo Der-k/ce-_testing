@@ -209,67 +209,90 @@ export default function VenuePage() {
         </div>
       </section>
 
-      <SectionShell>
-        <div className="grid gap-12 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
-          <div>
-            <p className="text-[13px] font-semibold uppercase tracking-[0.22em] text-[#02026e]">
-              About the Venue
+    <SectionShell className="bg-gradient-to-br from-[#02026e] via-[#0b0b8f] to-[#010150] text-white">
+  <div className="grid gap-12 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
+
+    {/* Left Content */}
+    <div>
+      {/* Section Label */}
+      <div className="inline-block">
+        <p className="text-[13px] font-semibold uppercase tracking-[0.22em] text-white">
+          About the Venue
+        </p>
+
+        <div className="mt-2 h-[2px] w-full rounded-full bg-[#06895b]" />
+      </div>
+
+      {/* Heading */}
+      <div className="mt-3 inline-block">
+        <h2 className="font-heading text-3xl font-bold tracking-[-0.02em] text-white">
+          {current.descriptionTitle}
+        </h2>
+
+        <div className="mt-3 h-[3px] w-24 rounded-full bg-[#06895b]" />
+      </div>
+
+      {/* Paragraphs */}
+      <div className="mt-6 space-y-5 text-base leading-8 text-white/90">
+        {current.descriptionParagraphs.map((paragraph) => (
+          <p key={paragraph}>{paragraph}</p>
+        ))}
+      </div>
+
+      {/* Venue Summary Card (WHITE + BLUE TEXT) */}
+      <div className="mt-8 rounded-[20px] border border-[#02026e]/15 bg-white p-5 shadow-sm">
+        <p className="text-base font-semibold uppercase tracking-[0.18em] text-[#02026e]">
+          Venue Summary
+        </p>
+
+        <div className="mt-4 space-y-3 text-base text-[#02026e]/80">
+          {current.venueSummary.map((item) => (
+            <p key={item.label}>
+              <span className="font-semibold text-[#02026e]">
+                {item.label}:
+              </span>{" "}
+              {item.value}
             </p>
-            <h2 className="font-heading mt-3 text-3xl font-bold tracking-[-0.02em] text-[color:var(--text-main)]-900">
-              {current.descriptionTitle}
-            </h2>
+          ))}
+        </div>
+      </div>
+    </div>
 
-            <div className="mt-6 space-y-5 text-base leading-8 text-[color:var(--text-main)]-600">
-              {current.descriptionParagraphs.map((paragraph) => (
-                <p key={paragraph}>{paragraph}</p>
-              ))}
-            </div>
-
-            <div className="mt-8 rounded-[20px] border border-[#02026e]/20 bg-gradient-to-b from-white to-[#02026e]/5 p-5 shadow-sm">
-              <p className="text-base font-semibold uppercase tracking-[0.18em] text-[#02026e]">
-                Venue Summary
-              </p>
-
-              <div className="mt-4 space-y-3 text-base text-[color:var(--text-main)]-700">
-                {current.venueSummary.map((item) => (
-                  <p key={item.label}>
-                    <span className="font-semibold text-[color:var(--text-main)]-900">
-                      {item.label}:
-                    </span>{" "}
-                    {item.value}
-                  </p>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          <div className="grid gap-4 sm:grid-cols-2">
-            {current.images.map((image, index) => (
-              <div
-                key={image}
-                className={`overflow-hidden rounded-[20px] border border-[#02026e]/20 bg-[#02026e]/5 shadow-sm ${
-                  index === 0 ? "sm:col-span-2" : ""
-                }`}
-              >
-                <div className="relative aspect-[4/3] w-full">
-                  <Image
-                    src={image}
-                    alt={`${current.venueName} image ${index + 1}`}
-                    fill
-                    sizes={
-                      index === 0
-                        ? "(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 50vw"
-                        : "(max-width: 640px) 100vw, 50vw"
-                    }
-                    className="object-cover transition duration-500 hover:scale-[1.03]"
-                  />
-                </div>
-              </div>
-            ))}
+    {/* Image Grid */}
+    <div className="grid gap-4 sm:grid-cols-2">
+      {current.images.map((image, index) => (
+        <div
+          key={image}
+          className={`
+            overflow-hidden rounded-[20px]
+            border border-[#06895b]/25
+            bg-[#06895b]/10
+            shadow-sm
+            transition-all duration-300
+            hover:border-[#06895b]/50
+            hover:bg-[#06895b]/15
+            ${index === 0 ? "sm:col-span-2" : ""}
+          `}
+        >
+          <div className="relative aspect-[4/3] w-full">
+            <Image
+              src={image}
+              alt={`${current.venueName} image ${index + 1}`}
+              fill
+              sizes={
+                index === 0
+                  ? "(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 50vw"
+                  : "(max-width: 640px) 100vw, 50vw"
+              }
+              className="object-cover transition duration-500 hover:scale-[1.03]"
+            />
           </div>
         </div>
-      </SectionShell>
+      ))}
+    </div>
 
+  </div>
+</SectionShell>
       <SectionShell muted>
         <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr]">
           <div>

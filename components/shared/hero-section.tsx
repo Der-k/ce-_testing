@@ -230,6 +230,7 @@ function FlipImageSlot({
         }}
       />
 
+      
       {/* ── Label chip ── */}
       <div style={{
         ...positionStyle,
@@ -469,25 +470,28 @@ export function HeroSection() {
   return (
     <section className="relative overflow-hidden bg-white min-h-[calc(100vh-96px)]">
 
-{/* Background gradient */}
-<div className="absolute inset-0 z-0 bg-[linear-gradient(to_bottom,white_0%,white_62%,#f8fafc_100%)]" />
+{/* Decorative background layer (IMPORTANT: isolates positioning) */}
+<div className="absolute inset-0 z-[1] pointer-events-none">
 
-{/* Decorative background logo */}
-<div className="absolute top-[-12%] left-[-10%] z-[1] pointer-events-none">
+  {/* TOP-LEFT LOGO */}
+<div className="absolute -top-24 -left-44 pointer-events-none z-0">
 
-  {/* ambient glow */}
-  <div className="absolute top-[10%] left-[10%] h-[500px] w-[500px] rounded-full bg-[#003994]/12 blur-3xl" />
-
-  {/* logo */}
-  <div className="relative h-[720px] w-[720px] opacity-[0.13]">
+  <div className="relative h-[1100px] w-[1100px] opacity-30">
     <Image
-      src="/images/logo_3.png"
-      alt="Background Logo"
+      src="/images/logo_2.png"
+      alt="Background Logo Top Left"
       fill
       priority
-      className="object-contain"
+      className="object-contain saturate-125"
     />
   </div>
+</div>
+
+
+  
+
+
+
 
 
 
@@ -552,7 +556,7 @@ export function HeroSection() {
     <ArrowRight className="relative z-10 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
   </a>
 
-  {/* SECONDARY CTA */}
+ {/* SECONDARY CTA */}
   <a
     href="/event/programme"
     className="
@@ -580,31 +584,57 @@ export function HeroSection() {
     View Programme
   </a>
 
+
   {/* TERTIARY CTA */}
-  <Link
-    href="/partners/become-a-partner"
+<Link
+  href="/partners/become-a-partner"
+  className="
+    group relative inline-flex items-center justify-center gap-2
+    rounded-full px-7 py-3 text-base font-semibold text-[#1f1f1f]
+
+    bg-gradient-to-r from-[#d4af00] via-[#fad202] to-[#d4af00]
+    bg-[length:200%_100%] bg-left
+
+    shadow-[0_12px_35px_rgba(250,210,2,0.30)]
+
+    transition-all duration-500 ease-out
+
+    hover:bg-right
+    hover:shadow-[0_18px_60px_rgba(250,210,2,0.42)]
+    hover:scale-[1.05]
+
+    active:scale-[0.97]
+
+    focus:outline-none
+    focus:ring-2
+    focus:ring-[#fad202]/50
+    focus:ring-offset-2
+  "
+>
+  {/* subtle light sweep */}
+  <span className="absolute inset-0 overflow-hidden rounded-full">
+    <span
+      className="
+        absolute -left-[120%] top-0
+        h-full w-[60%]
+        rotate-12
+        bg-white/25 blur-md
+        transition-all duration-700
+        group-hover:left-[120%]
+      "
+    />
+  </span>
+
+  <span className="relative z-10">Become a Partner</span>
+
+  <ArrowRight
     className="
-      group inline-flex items-center justify-center
-      rounded-full px-6 py-3 text-base font-semibold
-
-      text-slate-900
-      bg-transparent
-
-      border border-slate-300
-      shadow-sm
-
-      transition-all duration-300
-
-      hover:border-slate-400
-      hover:bg-slate-50
-      hover:shadow-md
-      hover:scale-[1.03]
-
-      active:scale-[0.98]
+      relative z-10 h-4 w-4
+      transition-transform duration-300
+      group-hover:translate-x-1
     "
-  >
-    Become a Partner
-  </Link>
+  />
+</Link>
 
 </div>
 
@@ -616,7 +646,15 @@ export function HeroSection() {
   href={edition.href}
   className="w-full hover-glow-card group block rounded-[22px] border border-slate-200 bg-white p-4 shadow-[0_12px_34px_rgba(15,23,42,0.06)]"
 >
-                  <p className={`text-[13px] font-semibold uppercase tracking-[0.2em] ${edition.accent}`}>
+                  <p
+  className={`
+    text-[11px]
+    font-bold
+    uppercase
+    tracking-[0.28em]
+    ${edition.accent}
+  `}
+>
                     {edition.name}
                   </p>
                   <div className="mt-4 space-y-3 text-base text-black">
@@ -631,7 +669,14 @@ export function HeroSection() {
                   </div>
                   <div className="mt-4 flex items-center justify-between text-base font-medium text-black">
                     <span>View details</span>
-                    <span className="transition-transform duration-200 group-hover:translate-x-1">→</span>
+                   <span className="
+  text-[#1140c4]
+  transition-all duration-300
+  group-hover:translate-x-1.5
+  group-hover:scale-110
+">
+  →
+</span>
                   </div>
                 </Link>
               ))}
