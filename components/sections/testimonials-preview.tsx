@@ -96,14 +96,63 @@ export function TestimonialsPreview() {
 
         {/* CTA */}
         <div className="mt-10 flex justify-center">
-          <Link
-            href="/conference/testimonials"
-            className="btn-outline-glow inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/15 px-6 py-3 text-base font-semibold text-white backdrop-blur-sm transition duration-300 hover:border-white/50 hover:bg-white/22"
-          >
-            View all testimonials
-            <ArrowRight className="h-4 w-4" />
-          </Link>
-        </div>
+  <Link
+    href="/conference/testimonials"
+    className="
+      group relative inline-flex items-center justify-center gap-2
+      overflow-hidden
+
+      rounded-full px-6 py-3 text-base font-semibold
+
+      text-white
+      bg-white/10 backdrop-blur-sm
+
+      border border-white/30
+
+      shadow-[0_10px_30px_rgba(0,0,0,0.12)]
+
+      transition-all duration-500 ease-out
+
+      hover:border-white/60
+      hover:scale-[1.04]
+      hover:shadow-[0_18px_50px_rgba(0,0,0,0.18)]
+
+      active:scale-[0.97]
+
+      focus:outline-none
+      focus:ring-2
+      focus:ring-white/25
+      focus:ring-offset-2
+      focus:ring-offset-[#02026e]
+    "
+  >
+    {/* white sweep */}
+    <span className="absolute inset-0 overflow-hidden rounded-full">
+      <span
+        className="
+          absolute left-0 top-0 h-full w-0
+          bg-white
+          transition-all duration-500 ease-out
+          group-hover:w-full
+        "
+      />
+    </span>
+
+    {/* text turns blue */}
+    <span className="relative z-10 transition-colors duration-300 group-hover:text-[#02026e]">
+      View all testimonials
+    </span>
+
+    <ArrowRight
+      className="
+        relative z-10 h-4 w-4
+        transition-all duration-300
+        group-hover:translate-x-1
+        group-hover:text-[#02026e]
+      "
+    />
+  </Link>
+</div>
       </div>
     </section>
   );
