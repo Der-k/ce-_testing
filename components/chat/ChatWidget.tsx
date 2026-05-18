@@ -33,7 +33,7 @@ export default function ChatWidget() {
   }
 
   return (
-    <div className="fixed bottom-10 right-7 z-[999]">
+    <div className="fixed bottom-10 right-7 z-[99999] group">
       {/* Bubble */}
       {!open && (
         <button
@@ -118,7 +118,7 @@ export default function ChatWidget() {
 <div
   className="
     absolute
-    right-20
+    right-24
     top-1/2
     -translate-y-1/2
     whitespace-nowrap
@@ -133,6 +133,10 @@ export default function ChatWidget() {
     text-[#06056b]
     shadow-xl
     backdrop-blur-md
+    opacity-0
+    transition-all
+    duration-300
+    group-hover:opacity-100
   "
 >
   Ask Conference AI
