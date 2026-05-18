@@ -347,26 +347,117 @@ export default function VenuePage() {
           </div>
         </div>
 
-        <div className="mt-6 flex flex-wrap gap-3">
-          <a
-            href={current.mapLink}
-            target="_blank"
-            rel="noreferrer"
-            className="btn-outline-glow inline-flex items-center gap-2 rounded-full px-6 py-3 text-base font-semibold text-[color:var(--text-main)]-900"
-          >
-            Open in Google Maps
-            <ArrowRight className="h-4 w-4" />
-          </a>
+       <div className="mt-6 flex flex-wrap gap-3">
 
-          <a
-            href="/get-tickets"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-glow rounded-full px-6 py-3 text-base font-semibold text-white"
-          >
-            Register Now
-          </a>
-        </div>
+  {/* GOOGLE MAPS */}
+  <a
+    href={current.mapLink}
+    target="_blank"
+    rel="noreferrer"
+    className="
+      group relative inline-flex items-center justify-center gap-2
+      overflow-hidden
+
+      rounded-full px-6 py-3 text-base font-semibold
+
+      text-[#02026e]
+      bg-white
+
+      border border-white/30
+
+      shadow-[0_10px_30px_rgba(0,0,0,0.10)]
+
+      transition-all duration-500 ease-out
+
+      hover:text-white
+      hover:border-[#009966]
+
+      hover:shadow-[0_18px_50px_rgba(0,153,102,0.25)]
+      hover:scale-[1.05]
+
+      active:scale-[0.97]
+
+      focus:outline-none
+      focus:ring-2
+      focus:ring-[#009966]/35
+      focus:ring-offset-2
+      focus:ring-offset-[#02026e]
+    "
+  >
+    {/* emerald sweep */}
+    <span className="absolute inset-0 overflow-hidden rounded-full">
+      <span
+        className="
+          absolute left-0 top-0 h-full w-0
+
+          bg-gradient-to-r
+          from-[#007a55]
+          via-[#009966]
+          to-[#00b377]
+
+          transition-all duration-500 ease-out
+
+          group-hover:w-full
+        "
+      />
+    </span>
+
+    <span className="relative z-10">Open in Google Maps</span>
+
+    <ArrowRight
+      className="
+        relative z-10 h-4 w-4
+        transition-transform duration-300
+        group-hover:translate-x-1
+      "
+    />
+  </a>
+
+  {/* REGISTER NOW (PRIMARY) */}
+  <a
+    href="/get-tickets"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="
+      group relative inline-flex items-center justify-center gap-2
+      overflow-hidden
+
+      rounded-full px-6 py-3 text-base font-semibold
+
+      text-white
+      bg-gradient-to-r from-[#007a55] via-[#009966] to-[#00b377]
+      bg-[length:200%_100%]
+      bg-left
+
+      shadow-[0_12px_35px_rgba(0,153,102,0.30)]
+
+      transition-all duration-500 ease-out
+
+      hover:bg-right
+      hover:shadow-[0_18px_55px_rgba(0,153,102,0.40)]
+      hover:scale-[1.05]
+
+      active:scale-[0.97]
+
+      focus:outline-none
+      focus:ring-2
+      focus:ring-[#009966]/35
+      focus:ring-offset-2
+      focus:ring-offset-[#02026e]
+    "
+  >
+    <span className="relative z-10">Register Now</span>
+
+    <ArrowRight
+      className="
+        relative z-10 h-4 w-4
+        transition-transform duration-300
+        group-hover:translate-x-1
+      "
+    />
+  </a>
+
+</div>
       </SectionShell>
     </main>
   );

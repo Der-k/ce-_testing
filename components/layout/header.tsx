@@ -86,7 +86,7 @@ export function Header() {
   )}
 </nav>
 
-         {/* CTA */}
+      {/* CTA */}
 <div className="hidden xl:flex items-center">
   <a
     href="/get-tickets"
@@ -94,35 +94,57 @@ export function Header() {
     rel="noopener noreferrer"
     className="
       group relative inline-flex items-center justify-center gap-2
+      overflow-hidden
+
       rounded-full px-7 py-3 text-[16px] font-semibold
 
       text-[#02026e]
       bg-white
 
-      border border-[#02026e]/40
+      border border-[#02026e]/35
 
       shadow-[0_10px_25px_rgba(15,23,42,0.08)]
 
       transition-all duration-500 ease-out
 
-      hover:border-[#02026e]/60
-      hover:shadow-[0_18px_45px_rgba(15,23,42,0.12)]
+      hover:text-white
+      hover:border-[#009966]
+
+      hover:shadow-[0_18px_50px_rgba(0,153,102,0.28)]
       hover:scale-[1.05]
 
       active:scale-[0.97]
 
       focus:outline-none
       focus:ring-2
-      focus:ring-[#02026e]/30
+      focus:ring-[#009966]/35
       focus:ring-offset-2
     "
   >
+    {/* FULL emerald sweep */}
+    <span className="absolute inset-0 rounded-full overflow-hidden">
+      <span
+        className="
+          absolute left-0 top-0 h-full w-0
+
+          bg-gradient-to-r
+          from-[#007a55]
+          via-[#009966]
+          to-[#00b377]
+
+          transition-all duration-500 ease-out
+
+          group-hover:w-full
+        "
+      />
+    </span>
+
     <span className="relative z-10">Get Tickets</span>
 
     <ArrowRight
       className="
         relative z-10 h-4 w-4
-        transition-transform duration-300
+        transition-all duration-300
         group-hover:translate-x-1
       "
     />

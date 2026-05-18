@@ -183,22 +183,101 @@ export default function WhyAttendPage() {
                 ))}
               </div>
 
-              <div className="mt-8 flex flex-wrap gap-3">
-                <Link
-                  href="/tickets"
-                  className="btn-glow rounded-full px-6 py-3 text-base font-semibold text-white"
-                >
-                  Register Now
-                </Link>
+           <div className="mt-8 flex flex-wrap gap-3">
 
-                <Link
-                  href="/partners"
-                  className="btn-outline-glow inline-flex items-center gap-2 rounded-full px-6 py-3 text-base font-semibold text-[color:var(--text-main)]-900"
-                >
-                  Explore Opportunities
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-              </div>
+  {/* REGISTER NOW */}
+  <Link
+    href="/tickets"
+    className="
+      group relative inline-flex items-center justify-center gap-2
+      overflow-hidden
+
+      rounded-full px-6 py-3 text-base font-semibold text-white
+
+      bg-gradient-to-r from-[#007a55] via-[#009966] to-[#00b377]
+      bg-[length:200%_100%] bg-left
+
+      shadow-[0_12px_35px_rgba(0,153,102,0.28)]
+
+      transition-all duration-500 ease-out
+
+      hover:bg-right
+      hover:shadow-[0_18px_55px_rgba(0,153,102,0.35)]
+      hover:scale-[1.05]
+
+      active:scale-[0.97]
+
+      focus:outline-none
+      focus:ring-2
+      focus:ring-[#009966]/40
+      focus:ring-offset-2
+    "
+  >
+    <span className="relative z-10">Register Now</span>
+  </Link>
+
+  {/* EXPLORE OPPORTUNITIES */}
+  <Link
+    href="/partners"
+    className="
+      group relative inline-flex items-center justify-center gap-2
+      overflow-hidden
+
+      rounded-full px-6 py-3 text-base font-semibold
+
+      text-[#02026e]
+      bg-white
+
+      border border-[#02026e]/30
+
+      shadow-[0_10px_25px_rgba(15,23,42,0.10)]
+
+      transition-all duration-500 ease-out
+
+      hover:text-white
+      hover:border-[#009966]
+
+      hover:shadow-[0_18px_55px_rgba(0,153,102,0.25)]
+      hover:scale-[1.05]
+
+      active:scale-[0.97]
+
+      focus:outline-none
+      focus:ring-2
+      focus:ring-[#009966]/35
+      focus:ring-offset-2
+    "
+  >
+    {/* white sweep */}
+    <span className="absolute inset-0 overflow-hidden rounded-full">
+      <span
+        className="
+          absolute left-0 top-0 h-full w-0
+
+          bg-white
+
+          transition-all duration-500 ease-out
+
+          group-hover:w-full
+        "
+      />
+    </span>
+
+    <span className="relative z-10 transition-colors duration-300 group-hover:text-[#02026e]">
+      Explore Opportunities
+    </span>
+
+    <ArrowRight
+      className="
+        relative z-10 h-4 w-4
+        transition-all duration-300
+        group-hover:translate-x-1
+        group-hover:text-[#02026e]
+      "
+    />
+  </Link>
+
+</div>
             </div>
           </div>
         </div>

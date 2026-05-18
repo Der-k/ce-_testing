@@ -421,22 +421,117 @@ export default function EventOverviewPage() {
               </p>
             </div>
 
-         <div className="flex flex-wrap gap-3">
-              <a
-                href="/get-tickets"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="rounded-full bg-white px-6 py-3 text-base font-semibold text-[#02026e] transition hover:bg-white/90"
-              >
-                Register Now
-              </a>
-              <a
-               href="/event/programme"
-                className="rounded-full border border-white/40 px-6 py-3 text-base font-semibold text-white transition hover:bg-white/10"
-              >
-                Request Programme
-              </a>
-            </div>
+    <div className="flex flex-wrap gap-3">
+
+  {/* REGISTER NOW */}
+  <a
+    href="/get-tickets"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="
+      group relative inline-flex items-center justify-center gap-2
+      overflow-hidden
+
+      rounded-full px-6 py-3 text-base font-semibold
+
+      text-[#02026e]
+      bg-white
+
+      border border-white/30
+
+      shadow-[0_10px_30px_rgba(0,0,0,0.12)]
+
+      transition-all duration-500 ease-out
+
+      hover:text-white
+      hover:border-[#009966]
+
+      hover:shadow-[0_18px_50px_rgba(0,153,102,0.30)]
+      hover:scale-[1.05]
+
+      active:scale-[0.97]
+
+      focus:outline-none
+      focus:ring-2
+      focus:ring-[#009966]/35
+      focus:ring-offset-2
+      focus:ring-offset-[#02026e]
+    "
+  >
+    {/* emerald sweep */}
+    <span className="absolute inset-0 overflow-hidden rounded-full">
+      <span
+        className="
+          absolute left-0 top-0 h-full w-0
+
+          bg-gradient-to-r
+          from-[#007a55]
+          via-[#009966]
+          to-[#00b377]
+
+          transition-all duration-500 ease-out
+
+          group-hover:w-full
+        "
+      />
+    </span>
+
+    <span className="relative z-10">Register Now</span>
+  </a>
+
+  {/* REQUEST PROGRAMME */}
+  <a
+    href="/event/programme"
+    className="
+      group relative inline-flex items-center justify-center gap-2
+      overflow-hidden
+
+      rounded-full px-6 py-3 text-base font-semibold
+
+      text-white
+      bg-white/5 backdrop-blur-sm
+
+      border border-white/25
+
+      shadow-[0_10px_30px_rgba(0,0,0,0.10)]
+
+      transition-all duration-500 ease-out
+
+      hover:border-white/60
+      hover:shadow-[0_18px_50px_rgba(0,0,0,0.18)]
+      hover:scale-[1.05]
+
+      active:scale-[0.97]
+
+      focus:outline-none
+      focus:ring-2
+      focus:ring-white/30
+      focus:ring-offset-2
+      focus:ring-offset-[#02026e]
+    "
+  >
+    {/* white sweep */}
+    <span className="absolute inset-0 overflow-hidden rounded-full">
+      <span
+        className="
+          absolute left-0 top-0 h-full w-0
+
+          bg-white
+
+          transition-all duration-500 ease-out
+
+          group-hover:w-full
+        "
+      />
+    </span>
+
+    {/* text turns blue on sweep */}
+    <span className="relative z-10 transition-colors duration-300 group-hover:text-[#02026e]">
+      Request Programme
+    </span>
+  </a>
+
+</div>
           </div>
         </div>
       </SectionShell>

@@ -11,10 +11,10 @@ type Partner = {
 };
 
 // Empty arrays (no real partners yet)
-const premiumPartner: Partner[] = [];
-const platinumSponsors: Partner[] = [];
-const goldSponsors: Partner[] = [];
+const bronzeSponsors: Partner[] = [];
+const industrySponsors: Partner[] = [];
 const silverSponsors: Partner[] = [];
+const goldSponsors: Partner[] = [];
 
 export default function PartnersPage() {
   return (
@@ -44,70 +44,106 @@ export default function PartnersPage() {
               Partners & Sponsors
             </h1>
 
-            <p className="mt-5 max-w-3xl text-xl
- leading-8 text-zinc-600">
-              Leading partners, sponsors, and collaborators will be announced soon.
-              The conference continues to attract major players across energy,
-              infrastructure, finance, and innovation.
+            <p className="mt-5 max-w-3xl text-xl leading-8 text-zinc-600">
+              Leading partners and sponsors across clean energy, industry,
+              infrastructure, and innovation will be announced soon.
             </p>
 
             <div className="mt-8 flex flex-wrap gap-3">
+              {/* GOLD CTA */}
               <Link
                 href="/partners/become-a-partner"
-                className="btn-glow rounded-full px-6 py-3 text-base font-semibold text-white"
+                className="
+                  group relative inline-flex items-center gap-2
+                  rounded-full px-6 py-3 font-semibold text-[#1f1f1f]
+
+                  bg-gradient-to-r from-yellow-400 via-amber-300 to-yellow-500
+                  shadow-[0_14px_40px_rgba(250,204,21,0.35)]
+                  transition-all duration-500 hover:scale-[1.05]
+                  hover:shadow-[0_20px_60px_rgba(250,204,21,0.45)]
+                "
               >
                 Become a Partner
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Link>
 
               <Link
                 href="/contact"
-                className="btn-outline-glow inline-flex items-center gap-2 rounded-full px-6 py-3 text-base font-semibold text-zinc-900"
+                className="
+                  group inline-flex items-center gap-2
+                  rounded-full border border-zinc-300 bg-white px-6 py-3
+                  font-semibold text-zinc-900 shadow-sm
+                  transition-all duration-300
+                  hover:border-[#02026e]/40 hover:text-[#02026e]
+                  hover:shadow-[0_18px_50px_rgba(2,2,110,0.18)]
+                  hover:scale-[1.05]
+                "
               >
                 Contact Us
-                <ArrowRight className="h-4 w-4" />
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Link>
             </div>
           </div>
         </div>
       </section>
 
-      {/* SECTIONS */}
-      <PartnerSection eyebrow="Premium Partner" title="Premium Partner" featured />
+      {/* GOLD */}
+      <PartnerSection
+        eyebrow="Gold Sponsorship"
+        title="Gold Sponsors"
+        tone="gold"
+      />
 
-      <PartnerSection eyebrow="Platinum Sponsor" title="Platinum Sponsor" />
+      {/* SILVER */}
+      <PartnerSection
+        eyebrow="Silver Sponsorship"
+        title="Silver Sponsors"
+        tone="silver"
+      />
 
-      <PartnerSection eyebrow="Gold Sponsors" title="Gold Sponsors" muted />
+      {/* INDUSTRY */}
+      <PartnerSection
+        eyebrow="Industry / Session Sponsorship"
+        title="Industry & Session Sponsors"
+        tone="industry"
+      />
 
-      <PartnerSection eyebrow="Silver Sponsors" title="Silver Sponsors" />
+      {/* BRONZE */}
+      <PartnerSection
+        eyebrow="Bronze Sponsorship"
+        title="Bronze Sponsors"
+        tone="bronze"
+      />
 
       {/* CTA */}
       <section className="mx-auto max-w-7xl px-4 pb-16 md:px-6 lg:pb-20">
-        <div className="rounded-[28px] border border-[#02026e]/20 bg-gradient-to-r from-blue-600 to-[#02026e] px-6 py-8 text-white shadow-[0_18px_50px_rgba(37,99,235,0.18)] md:px-10 md:py-10">
-          <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+        <div className="relative overflow-hidden rounded-[28px] border border-[#02026e]/20 bg-gradient-to-r from-blue-600 via-[#02026e] to-indigo-700 px-6 py-8 text-white shadow-[0_18px_50px_rgba(37,99,235,0.18)] md:px-10 md:py-10">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.15),transparent_60%)]" />
+
+          <div className="relative flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
             <div className="max-w-2xl">
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-blue-100">
                 Partnership Opportunities
               </p>
-              <h2 className="mt-2 text-2xl font-bold tracking-[-0.02em] md:text-3xl">
+              <h2 className="mt-2 text-2xl font-bold md:text-3xl">
                 Position your brand within the clean energy conversation
               </h2>
-              <p className="mt-3 text-base leading-7 text-blue-50 md:text-base">
-                Join the conference as a sponsor or partner and connect with
-                delegates, policymakers, investors, and industry leaders.
+              <p className="mt-3 text-blue-50">
+                Join as a sponsor and connect with leaders shaping the energy transition.
               </p>
             </div>
 
             <div className="flex flex-wrap gap-3">
               <Link
                 href="/partners/become-a-partner"
-                className="rounded-full bg-white px-6 py-3 text-base font-semibold text-[#02026e] transition hover:bg-blue-50"
+                className="rounded-full bg-white px-6 py-3 font-semibold text-[#02026e]"
               >
                 Become a Partner
               </Link>
 
               <Link
                 href="/contact"
-                className="rounded-full border border-white/40 px-6 py-3 text-base font-semibold text-white transition hover:bg-white/10"
+                className="rounded-full border border-white/40 px-6 py-3 font-semibold text-white hover:bg-white/10"
               >
                 Contact the Team
               </Link>
@@ -126,52 +162,83 @@ export default function PartnersPage() {
 function PartnerSection({
   eyebrow,
   title,
-  featured = false,
-  muted = false,
+  tone,
 }: {
   eyebrow: string;
   title: string;
-  featured?: boolean;
-  muted?: boolean;
+  tone: "gold" | "silver" | "bronze" | "industry";
 }) {
-  const placeholders = Array.from({ length: featured ? 1 : 4 });
+  const config = {
+    gold: {
+      bg: "bg-gradient-to-b from-amber-50 via-yellow-50 to-white",
+      border: "border-amber-200",
+      badge:
+        "text-amber-800 border-amber-300 bg-gradient-to-r from-amber-200/40 to-yellow-200/40",
+      glow: "bg-amber-400/10",
+    },
+    silver: {
+      bg: "bg-gradient-to-b from-slate-50 via-gray-50 to-white",
+      border: "border-slate-200",
+      badge:
+        "text-slate-700 border-slate-300 bg-gradient-to-r from-slate-200/40 to-gray-200/40",
+      glow: "bg-slate-400/10",
+    },
+    bronze: {
+      bg: "bg-gradient-to-b from-orange-50 via-amber-50 to-white",
+      border: "border-orange-200",
+      badge:
+        "text-orange-800 border-orange-300 bg-gradient-to-r from-orange-200/40 to-yellow-200/40",
+      glow: "bg-orange-400/10",
+    },
+    industry: {
+      bg: "bg-gradient-to-b from-blue-50 via-indigo-50 to-white",
+      border: "border-blue-200",
+      badge:
+        "text-[#02026e] border-blue-300 bg-gradient-to-r from-blue-200/40 to-indigo-200/40",
+      glow: "bg-[#02026e]/10",
+    },
+  };
+
+  const theme = config[tone];
+  const placeholders = Array.from({ length: 4 });
 
   return (
-    <section className={muted ? "bg-slate-50" : "bg-white"}>
-      <div className="mx-auto max-w-7xl px-4 py-14 md:px-6 lg:py-16">
+    <section className={`relative ${theme.bg}`}>
+      {/* subtle glow layer */}
+      <div className={`absolute inset-0 opacity-60 ${theme.glow}`} />
+
+      <div className="relative mx-auto max-w-7xl px-4 py-14 md:px-6 lg:py-16">
         <div className="max-w-3xl">
-          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#02026e]">
+          <p
+            className={`inline-flex rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-[0.22em] ${theme.badge}`}
+          >
             {eyebrow}
           </p>
 
-          <h2 className="mt-3 text-3xl font-bold tracking-[-0.02em] text-zinc-900">
+          <h2 className="mt-4 text-3xl font-bold text-zinc-900">
             {title}
           </h2>
         </div>
 
-        <div
-          className={`mt-10 grid gap-6 ${
-            featured ? "grid-cols-1" : "md:grid-cols-2"
-          }`}
-        >
+        <div className="mt-10 grid gap-6 md:grid-cols-2">
           {placeholders.map((_, i) => (
             <article
               key={i}
-              className="rounded-[24px] border border-dashed border-slate-300 bg-white p-6 text-center shadow-sm transition hover:-translate-y-1 hover:shadow-[0_18px_45px_rgba(2,6,23,0.08)]"
+              className={`rounded-[24px] border ${theme.border} bg-white p-6 text-center shadow-sm transition hover:-translate-y-1 hover:shadow-[0_18px_45px_rgba(2,6,23,0.08)]`}
             >
-              <div className="flex flex-col items-center justify-center gap-4 py-10">
-                <div className="rounded-full border border-slate-300 px-4 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">
+              <div className="flex flex-col items-center gap-4 py-10">
+                <div
+                  className={`rounded-full border px-4 py-1 text-xs font-semibold uppercase tracking-[0.18em] ${theme.badge}`}
+                >
                   {eyebrow}
                 </div>
 
-                <h3 className="text-xl
- font-semibold text-black">
+                <h3 className="text-xl font-semibold text-black">
                   To Be Announced
                 </h3>
 
                 <p className="max-w-md text-base text-slate-400">
-                  Official partners and sponsors for this category will be
-                  announced soon. Stay tuned for updates.
+                  Sponsors in this category will be announced soon.
                 </p>
               </div>
             </article>

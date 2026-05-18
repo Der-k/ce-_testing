@@ -223,52 +223,76 @@ export default function ContactPage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-4 py-14 md:px-6 lg:py-16">
-        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-          {contactCards.map((card) => {
-            const Icon = card.icon;
+      <section className="bg-gradient-to-br from-[#02026e] via-[#0b0b8f] to-[#010150]">
+  <div className="mx-auto max-w-7xl px-4 py-14 md:px-6 lg:py-16 text-white">
+    
+    <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+      {contactCards.map((card) => {
+        const Icon = card.icon;
 
-            return (
-              <article
-                key={card.title}
-                className="rounded-[22px] border border-[#02026e]/20 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(2,2,110,0.10)]"
-              >
-                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#02026e]/5 text-[#02026e]">
-                  <Icon className="h-5 w-5" />
+        return (
+          <article
+            key={card.title}
+            className="
+              group rounded-[22px]
+              border border-[#06895b]/25
+              bg-[#06895b]/10
+              p-6
+              backdrop-blur-sm
+              transition-all duration-300
+              hover:-translate-y-1
+              hover:border-[#06895b]/50
+              hover:bg-[#06895b]/15
+              hover:shadow-[0_18px_40px_rgba(6,137,91,0.18)]
+            "
+          >
+            {/* Icon container (bigger + more visible) */}
+            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-[#06895b] text-white shadow-[0_10px_25px_rgba(6,137,91,0.35)] ring-2 ring-white/10">
+              <Icon className="h-7 w-7" />
+            </div>
+
+            <h2 className="mt-5 text-xl font-semibold text-white">
+              {card.title}
+            </h2>
+
+            <p className="mt-3 text-base leading-7 text-white/85">
+              {card.description}
+            </p>
+
+            <div className="mt-5 space-y-3 text-base text-white/90">
+              <p className="font-medium text-white">
+                {card.person}
+              </p>
+
+              <div className="flex items-start gap-3">
+                <Mail className="mt-0.5 h-5 w-5 shrink-0 text-[#06895b]" />
+                <a
+                  href={`mailto:${card.email}`}
+                  className="hover:text-[#06895b] transition-colors"
+                >
+                  {card.email}
+                </a>
+              </div>
+
+              {card.phone ? (
+                <div className="flex items-start gap-3">
+                  <Phone className="mt-0.5 h-5 w-5 shrink-0 text-[#06895b]" />
+                  <a
+                    href={`tel:${card.phone}`}
+                    className="hover:text-[#06895b] transition-colors"
+                  >
+                    {card.phone}
+                  </a>
                 </div>
+              ) : null}
+            </div>
+          </article>
+        );
+      })}
+    </div>
 
-                <h2 className="mt-5 text-xl font-semibold text-black">
-                  {card.title}
-                </h2>
-
-                <p className="mt-3 text-base leading-7 text-black">
-                  {card.description}
-                </p>
-
-                <div className="mt-5 space-y-3 text-base">
-                  <p className="font-medium text-black">{card.person}</p>
-
-                  <div className="flex items-start gap-3 text-black">
-                    <Mail className="mt-0.5 h-4 w-4 shrink-0 text-[#02026e]" />
-                    <a href={`mailto:${card.email}`} className="hover:text-[#02026e]">
-                      {card.email}
-                    </a>
-                  </div>
-
-                  {card.phone ? (
-                    <div className="flex items-start gap-3 text-black">
-                      <Phone className="mt-0.5 h-4 w-4 shrink-0 text-[#02026e]" />
-                      <a href={`tel:${card.phone}`} className="hover:text-[#02026e]">
-                        {card.phone}
-                      </a>
-                    </div>
-                  ) : null}
-                </div>
-              </article>
-            );
-          })}
-        </div>
-      </section>
+  </div>
+</section>
 
       <section className="bg-slate-50">
         <div className="mx-auto max-w-7xl px-4 py-14 md:px-6 lg:py-16">
