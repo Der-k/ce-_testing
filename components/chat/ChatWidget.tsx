@@ -173,11 +173,11 @@ sm:w-20
       <div className="relative z-10 flex items-center justify-between">
         <div>
           <h2 className="text-[28px] font-bold tracking-tight">
-            Conference AI
+            Any questions?
           </h2>
 
           <p className="mt-1 text-[15px] text-white/75">
-            Clean Energy Conference Assistant
+           Ask our Clean Energy Conference Assistant
           </p>
         </div>
 

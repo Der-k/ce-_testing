@@ -471,7 +471,7 @@ export function HeroSection() {
     <section className="relative overflow-hidden bg-white min-h-[100svh] lg:min-h-[calc(100vh-96px)]">
 
 {/* Decorative background layer (IMPORTANT: isolates positioning) */}
-<div className="absolute inset-0 z-[1] pointer-events-none">
+<div className="absolute inset-0 bottom-[220px] z-[1] pointer-events-none overflow-hidden">
 
   {/* TOP-LEFT LOGO */}
 <div className="absolute -top-24 -left-44 pointer-events-none z-0">
@@ -487,7 +487,20 @@ export function HeroSection() {
   </div>
 </div>
 
+<div className="absolute inset-0 z-[1] pointer-events-none"></div>
+{/* BOTTOM-RIGHT LOGO */}
+<div className="absolute bottom-[180px] right-[-140px] pointer-events-none z-0">
 
+
+<div className="relative h-[620px] w-[620px] opacity-[0.22]">
+    <Image
+      src="/images/bg_1.png"
+      alt="Background Logo Bottom Right"
+      fill
+      className="object-contain saturate-150"
+    />
+  </div>
+</div>
   
 
 
