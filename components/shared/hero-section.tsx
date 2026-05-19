@@ -468,7 +468,7 @@ export function HeroSection() {
   ];
 
   return (
-    <section className="relative overflow-hidden bg-white min-h-[calc(100vh-96px)]">
+    <section className="relative overflow-hidden bg-white min-h-[100svh] lg:min-h-[calc(100vh-96px)]">
 
 {/* Decorative background layer (IMPORTANT: isolates positioning) */}
 <div className="absolute inset-0 z-[1] pointer-events-none">
@@ -501,28 +501,73 @@ export function HeroSection() {
 
       {/* ── ROW 1: heading + image ── */}
       <div className="relative z-20 mx-auto max-w-7xl px-4 pt-6 md:px-6 lg:pt-8">
-        <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,1.05fr)_minmax(420px,0.95fr)] lg:gap-10">
+        <div className="flex flex-col lg:grid lg:grid-cols-[minmax(0,1.05fr)_minmax(420px,0.95fr)] lg:gap-10 items-start gap-8">
 
           {/* LEFT */}
-          <div className="max-w-3xl pt-2">
-            <div className="inline-flex items-center rounded-full border border-slate-200 bg-white px-4 py-2 text-[13px] font-semibold uppercase tracking-[0.24em] text-[#010150] shadow-[0_6px_18px_rgba(15,23,42,0.05)]">
+       <div className="max-w-3xl pt-2 flex flex-col">
+           <div className="order-1 inline-flex items-center rounded-full border border-slate-200 bg-white px-4 py-2 text-[13px] font-semibold uppercase tracking-[0.24em] text-[#010150] shadow-[0_6px_18px_rgba(15,23,42,0.05)]">
               Africa × Australia · Two 2026 Conference Editions
             </div>
 
-            <h1 className="font-heading mt-4 max-w-4xl text-4xl font-extrabold leading-[0.96] tracking-[-0.045em] text-slate-950 sm:text-[3.25rem] lg:text-[3.8rem]">
+            <h1 className="order-2 font-heading mt-4 max-w-4xl text-[2.5rem] sm:text-[3.25rem] lg:text-[3.8rem] font-extrabold leading-[0.96] tracking-[-0.045em] text-slate-950">
               Driving the Future of
               <span className="mt-2 block text-[#02026e]">Clean Energy</span>
             </h1>
 
-            <p className="mt-4 max-w-2xl text-[17px] leading-7 text-black sm:text-xl
-">
+            <p className="order-5 lg:order-3 mt-4 max-w-2xl text-[17px] leading-7 text-black sm:text-xl">
               Join policymakers, investors, project developers, innovators, and
               industry stakeholders across Kigali and Perth for a high-level
               platform focused on energy transition, climate finance, regional
               collaboration, and market opportunity.
             </p>
 
-           <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-3">
+
+            {/* Edition cards */}
+          <div className="order-3 lg:order-4 mt-6 grid grid-cols-2 gap-3">
+              {editions.map((edition) => (
+               <Link
+  key={edition.name}
+  href={edition.href}
+  className="w-full hover-glow-card group block rounded-[22px] border border-slate-200 bg-white p-4 shadow-[0_12px_34px_rgba(15,23,42,0.06)]"
+>
+                  <p
+  className={`
+    text-[11px]
+    font-bold
+    uppercase
+    tracking-[0.28em]
+    ${edition.accent}
+  `}
+>
+                    {edition.name}
+                  </p>
+                  <div className="mt-4 space-y-3 text-base text-black">
+                    <div className="flex items-start gap-2.5">
+                      <CalendarDays className="mt-0.5 h-4 w-4 text-[#02026e]" />
+                      <span>{edition.date}</span>
+                    </div>
+                    <div className="flex items-start gap-2.5">
+                      <MapPin className="mt-0.5 h-4 w-4 text-[#02026e]" />
+                      <span>{edition.venue}</span>
+                    </div>
+                  </div>
+                  <div className="mt-4 flex items-center justify-between text-base font-medium text-black">
+                    <span>View details</span>
+                   <span className="
+  text-[#1140c4]
+  transition-all duration-300
+  group-hover:translate-x-1.5
+  group-hover:scale-110
+">
+  →
+</span>
+                  </div>
+                </Link>
+              ))}
+            </div>
+
+            
+           <div className="order-4 lg:order-5 mt-6 grid grid-cols-1 sm:grid-cols-2 gap-3">
 
   {/* PRIMARY CTA */}
   <a
@@ -637,54 +682,10 @@ export function HeroSection() {
 </Link>
 
 </div>
-
-            {/* Edition cards */}
-          <div className="mt-6 grid grid-cols-2 gap-3">
-              {editions.map((edition) => (
-               <Link
-  key={edition.name}
-  href={edition.href}
-  className="w-full hover-glow-card group block rounded-[22px] border border-slate-200 bg-white p-4 shadow-[0_12px_34px_rgba(15,23,42,0.06)]"
->
-                  <p
-  className={`
-    text-[11px]
-    font-bold
-    uppercase
-    tracking-[0.28em]
-    ${edition.accent}
-  `}
->
-                    {edition.name}
-                  </p>
-                  <div className="mt-4 space-y-3 text-base text-black">
-                    <div className="flex items-start gap-2.5">
-                      <CalendarDays className="mt-0.5 h-4 w-4 text-[#02026e]" />
-                      <span>{edition.date}</span>
-                    </div>
-                    <div className="flex items-start gap-2.5">
-                      <MapPin className="mt-0.5 h-4 w-4 text-[#02026e]" />
-                      <span>{edition.venue}</span>
-                    </div>
-                  </div>
-                  <div className="mt-4 flex items-center justify-between text-base font-medium text-black">
-                    <span>View details</span>
-                   <span className="
-  text-[#1140c4]
-  transition-all duration-300
-  group-hover:translate-x-1.5
-  group-hover:scale-110
-">
-  →
-</span>
-                  </div>
-                </Link>
-              ))}
-            </div>
           </div>
 
           {/* RIGHT: 3 stacked flip slots */}
-          <div className="relative lg:pt-2">
+          <div className="relative lg:pt-2 scale-[0.92] md:scale-100">
             <div className="relative">
               <div className="relative rounded-[32px] border border-slate-200 shadow-[0_30px_90px_rgba(15,23,42,0.18)] overflow-hidden">
                 <div className="flex flex-col" style={{ aspectRatio: "4 / 5.2" }}>
