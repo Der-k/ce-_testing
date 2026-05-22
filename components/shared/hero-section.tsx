@@ -4,28 +4,30 @@ import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useRef, useState, useCallback } from "react";
 import { ArrowRight, CalendarDays, MapPin } from "lucide-react";
+import { HeroCalendarFlip } from "@/components/ui/HeroCalendarFlip";
 
 const categoryImages = {
   solar: [
-    { src: "/images/solar-1.jpg", alt: "Solar energy" },
-    { src: "/images/solar-2.jpg", alt: "Solar panels" },
-    { src: "/images/solar-3.jpg", alt: "Solar farm" },
-    { src: "/images/solar-4.jpg", alt: "Solar farm" },
+    { src: "/gifs/solar-1.gif", alt: "Solar energy" },
+    { src: "/gifs/solar-2.gif", alt: "Solar panels" },
+    { src: "/gifs/solar-3.gif", alt: "Solar farm" },
+    { src: "/gifs/solar-4.gif", alt: "Solar farm" },
   ],
+
   geothermal: [
-    { src: "/images/geo-1.jpg", alt: "Geothermal energy" },
-    { src: "/images/geo-2.jpg", alt: "Hydrothermal plant" },
-    { src: "/images/geo-3.jpg", alt: "Geothermal steam" },
-    { src: "/images/geo-4.jpg", alt: "Geothermal steam" },
+    { src: "/gifs/geo-1.gif", alt: "Geothermal energy" },
+    { src: "/gifs/geo-2.gif", alt: "Hydrothermal plant" },
+    { src: "/gifs/geo-3.gif", alt: "Geothermal steam" },
+    { src: "/gifs/geo-4.gif", alt: "Geothermal steam" },
   ],
+
   mining: [
-    { src: "/images/mining-1.jpg", alt: "Mining operations" },
-    { src: "/images/mining-2.jpg", alt: "Mine site" },
-    { src: "/images/mining-3.jpg", alt: "Clean mining" },
-    { src: "/images/mining-4.jpg", alt: "Clean mining" },
+    { src: "/gifs/mining-1.gif", alt: "Mining operations" },
+    { src: "/gifs/mining-2.gif", alt: "Mine site" },
+    { src: "/gifs/mining-3.gif", alt: "Clean mining" },
+    { src: "/gifs/mining-4.gif", alt: "Clean mining" },
   ],
 };
-
 const carouselImages = [
   { src: "/images/hero-carousel-1.jpeg", alt: "Delegates networking" },
   { src: "/images/hero-carousel-2.jpeg", alt: "Panel session" },
@@ -36,16 +38,6 @@ const carouselImages = [
   { src: "/images/hero-carousel-7.jpeg", alt: "Conference hall" },
   { src: "/images/hero-carousel-8.jpeg", alt: "Energy discussion" },
 ];
-
-
-
-const FLIP_DURATION = 1200;   // kept so cycle-timing math is unchanged
-const SLOT_GAP      = 600;
-const CYCLE_PAUSE   = 5000;
-
-// Color wash timing
-const WASH_IN_MS  = 380;      // sweep in: fast enough to feel punchy
-const WASH_OUT_MS = 500;      // retract: slightly slower for a smooth reveal
 
 // ─── Inject Ken Burns keyframes once, client-side only ────────────────────────
 const injectSlotStyles = (() => {
@@ -87,165 +79,7 @@ function registerSlot(index: number, cb: () => void) {
   slotCallbacks[index] = cb;
 }
 
-// ─── FlipImageSlot ────────────────────────────────────────────────────────────
-// Animation: brand-blue color wash sweeps left→right over the panel, the image
-// swaps underneath at full coverage, then the wash retracts right→left revealing
-// the new image. Ken Burns runs continuously on the active image.
-function FlipImageSlot({
-  images,
-  slotIndex,
-  label,
-  cardPosition = "top-left",
-}: {
-  images: { src: string; alt: string }[];
-  slotIndex: number;
-  label: string;
-  cardPosition?: "top-left" | "top-right" | "bottom-left" | "bottom-right";
-}) {
-  const [baseIdx, setBaseIdx] = useState(0);
-  const [baseKey, setBaseKey] = useState(0); // increment → Ken Burns restarts
 
-  // Refs let doFlip read/write current state without going stale
-  const washRef    = useRef<HTMLDivElement>(null);
-  const baseIdxRef = useRef(0);
-  const busyRef    = useRef(false);
-
-  useEffect(() => { injectSlotStyles(); }, []);
-
-  const doFlip = useCallback(() => {
-    if (busyRef.current) return;
-    busyRef.current = true;
-
-    const wash = washRef.current;
-    if (!wash) { busyRef.current = false; return; }
-
-    const next = (baseIdxRef.current + 1) % images.length;
-
-    // ── Phase 1: reset wash to left edge (no transition) ──────────────────
-    wash.style.transition      = "none";
-    wash.style.transform       = "scaleX(0)";
-    wash.style.transformOrigin = "left center";
-    wash.style.opacity         = "0.82";
-
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-
-        // ── Phase 2: sweep in across the panel ──────────────────────────
-        wash.style.transition = `transform ${WASH_IN_MS}ms cubic-bezier(0.4, 0, 0.2, 1)`;
-        wash.style.transform  = "scaleX(1)";
-
-        setTimeout(() => {
-
-          // ── Phase 3: swap image while fully covered ────────────────────
-          baseIdxRef.current = next;
-          setBaseIdx(next);
-          setBaseKey((k) => k + 1);
-
-          // ── Phase 4: retract wash from right edge, fade the tail end ──
-          wash.style.transformOrigin = "right center";
-          wash.style.transition = [
-            `transform ${WASH_OUT_MS}ms cubic-bezier(0.4, 0, 0.2, 1)`,
-            `opacity   ${WASH_OUT_MS * 0.4}ms ease ${WASH_OUT_MS * 0.6}ms`,
-          ].join(", ");
-          wash.style.transform = "scaleX(0)";
-          wash.style.opacity   = "0";
-
-          setTimeout(() => { busyRef.current = false; }, WASH_OUT_MS);
-
-        }, WASH_IN_MS + 20);
-      });
-    });
-  }, [images.length]); // baseIdx read via ref — no stale closure
-
-  useEffect(() => {
-    registerSlot(slotIndex, doFlip);
-  }, [slotIndex, doFlip]);
-
-  // Orchestrate all three slots (unchanged logic)
-  useEffect(() => {
-    if (slotIndex !== 0) return;
-    let cancelled = false;
-    const timers: ReturnType<typeof setTimeout>[] = [];
-    const runCycle = () => {
-      if (cancelled) return;
-      slotCallbacks.forEach((cb, i) => {
-        const t = setTimeout(() => { if (!cancelled) cb?.(); }, i * (FLIP_DURATION + SLOT_GAP));
-        timers.push(t);
-      });
-      const cycleLength = 3 * (FLIP_DURATION + SLOT_GAP) + CYCLE_PAUSE;
-      timers.push(setTimeout(runCycle, cycleLength));
-    };
-    timers.push(setTimeout(runCycle, 1000));
-    return () => { cancelled = true; timers.forEach(clearTimeout); };
-  }, [slotIndex]);
-
-  const positionStyle: React.CSSProperties = {
-    position: "absolute",
-    zIndex: 25,
-    ...(cardPosition === "top-left"     && { top: 12, left: 12 }),
-    ...(cardPosition === "top-right"    && { top: 12, right: 12 }),
-    ...(cardPosition === "bottom-left"  && { bottom: 12, left: 12 }),
-    ...(cardPosition === "bottom-right" && { bottom: 12, right: 12 }),
-  };
-
-  return (
-    <div className="relative w-full h-full overflow-hidden">
-
-      {/* ── Active image — Ken Burns slow zoom ── */}
-<Image
-  key={baseKey}
-  src={images[baseIdx].src}
-  alt={images[baseIdx].alt}
-  fill
-  priority={slotIndex === 0} // only first visible slot
-  sizes="(max-width: 768px) 100vw, 50vw"
-  className="object-cover"
-  style={{
-    animation: `kb${slotIndex % 3} 7500ms ease-out both`,
-  }}
-/>
-
-      {/* ── Color wash — animated imperatively via washRef ── */}
-      <div
-        ref={washRef}
-        style={{
-          position: "absolute", inset: 0,
-          zIndex: 8,
-          background: "linear-gradient(105deg, #02026e 0%, #1140c4 45%, #02026e 100%)",
-          transform: "scaleX(0)",
-          transformOrigin: "left center",
-          opacity: 0,
-          pointerEvents: "none",
-        }}
-      />
-
-      {/* ── Vignette gradient ── */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          zIndex: 10,
-          background: cardPosition.startsWith("bottom")
-            ? "linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 55%)"
-            : "linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, transparent 55%)",
-        }}
-      />
-
-      
-      {/* ── Label chip ── */}
-      <div style={{
-        ...positionStyle,
-        borderRadius: 6, padding: "4px 10px",
-        background: "rgba(10, 13, 28, 0.72)",
-        backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)",
-        border: "1px solid rgba(255,255,255,0.12)",
-        fontSize: 9, fontWeight: 700, letterSpacing: "0.18em",
-        textTransform: "uppercase", color: "white", maxWidth: 120, lineHeight: 1.4,
-      }}>
-        {label}
-      </div>
-    </div>
-  );
-}
 
 // ─── ConferenceMomentsCarousel ─────────────────────────────────────────────────
 const MARQUEE_BASE_SPEED = 0.7;
@@ -513,8 +347,8 @@ export function HeroSection() {
       <div className="absolute inset-x-0 top-0 h-px bg-slate-200" />
 
       {/* ── ROW 1: heading + image ── */}
-      <div className="relative z-20 mx-auto max-w-7xl px-4 pt-6 md:px-6 lg:pt-8">
-        <div className="flex flex-col lg:grid lg:grid-cols-[minmax(0,1.05fr)_minmax(420px,0.95fr)] lg:gap-10 items-start gap-8">
+      <div className="relative z-20 mx-auto max-w-[1500px] px-4 pt-4 md:px-6 lg:px-10 lg:pt-5">
+        <div className="flex flex-col lg:grid lg:grid-cols-[minmax(0,1.05fr)_minmax(720px,1fr)] lg:gap-14 items-start gap-8">
 
           {/* LEFT */}
        <div className="max-w-3xl pt-2 flex flex-col">
@@ -522,65 +356,65 @@ export function HeroSection() {
               Africa × Australia · Two 2026 Conference Editions
             </div>
 
-            <h1 className="order-2 font-heading mt-4 max-w-4xl text-[2.5rem] sm:text-[3.25rem] lg:text-[3.8rem] font-extrabold leading-[0.96] tracking-[-0.045em] text-slate-950">
-              Driving the Future of
-              <span className="mt-2 block text-[#02026e]">Clean Energy</span>
-            </h1>
+          <h1 className="order-2 font-heading mt-3 max-w-2xl text-[1.75rem] sm:text-[2.1rem] lg:text-[2.4rem] font-extrabold leading-[1.08] tracking-[-0.035em] text-slate-950">
+  <span className="text-[#02026e]"> Clean Energy Conference</span>
+</h1>
+            <p className="order-5 lg:order-3 mt-3 max-w-xl text-[15px] leading-6 text-black/80">
+  Kigali & Perth editions bringing together policymakers, investors, and
+  industry leaders to accelerate clean energy transition and regional collaboration.
+</p>
 
-            <p className="order-5 lg:order-3 mt-4 max-w-2xl text-[17px] leading-7 text-black sm:text-xl">
-              Join policymakers, investors, project developers, innovators, and
-              industry stakeholders across Kigali and Perth for a high-level
-              platform focused on energy transition, climate finance, regional
-              collaboration, and market opportunity.
-            </p>
+     <div className="order-3 lg:order-4 mt-5 grid grid-cols-2 gap-3">
+  {editions.map((edition) => (
+    <Link
+      key={edition.name}
+      href={edition.href}
+    className={`
+  group relative block rounded-xl bg-white px-4 py-3
+  border transition-all duration-300
+  hover:scale-[1.02]
 
+  ${
+    edition.name.includes("Perth")
+      ? "border-emerald-200 shadow-[0_10px_28px_rgba(16,185,129,0.14)] hover:shadow-[0_20px_60px_rgba(16,185,129,0.30)]"
+      : "border-[#93a4ff] shadow-[0_10px_28px_rgba(17,64,196,0.16)] hover:shadow-[0_20px_60px_rgba(17,64,196,0.32)]"
+  }
+`}>
+       {/* Header row */}
+      <div className="flex items-center justify-between">
+        <p
+          className={`
+            text-[10px] font-bold uppercase tracking-[0.25em]
+            ${edition.accent}
+          `}
+        >
+          {edition.name.split(" ")[0]}
+        </p>
 
-            {/* Edition cards */}
-          <div className="order-3 lg:order-4 mt-6 grid grid-cols-2 gap-3">
-              {editions.map((edition) => (
-               <Link
-  key={edition.name}
-  href={edition.href}
-  className="w-full hover-glow-card group block rounded-[22px] border border-slate-200 bg-white p-4 shadow-[0_12px_34px_rgba(15,23,42,0.06)]"
->
-                  <p
-  className={`
-    text-[11px]
-    font-bold
-    uppercase
-    tracking-[0.28em]
-    ${edition.accent}
-  `}
->
-                    {edition.name}
-                  </p>
-                  <div className="mt-4 space-y-3 text-base text-black">
-                    <div className="flex items-start gap-2.5">
-                      <CalendarDays className="mt-0.5 h-4 w-4 text-[#02026e]" />
-                      <span>{edition.date}</span>
-                    </div>
-                    <div className="flex items-start gap-2.5">
-                      <MapPin className="mt-0.5 h-4 w-4 text-[#02026e]" />
-                      <span>{edition.venue}</span>
-                    </div>
-                  </div>
-                  <div className="mt-4 flex items-center justify-between text-base font-medium text-black">
-                    <span>View details</span>
-                   <span className="
-  text-[#1140c4]
-  transition-all duration-300
-  group-hover:translate-x-1.5
-  group-hover:scale-110
-">
-  →
-</span>
-                  </div>
-                </Link>
-              ))}
-            </div>
+        <span className="text-[12px] text-slate-400">
+          {edition.name.includes("Kigali") ? "RWA" : "AUS"}
+        </span>
+      </div>
+
+      {/* Compact details */}
+      <div className="mt-2 space-y-1 text-[13px] text-black/80 leading-snug">
+        <div className="truncate">{edition.date}</div>
+        <div className="truncate text-slate-500">{edition.venue.split(",")[0]}</div>
+      </div>
+
+      {/* Footer */}
+      <div className="mt-2 flex items-center justify-between text-[12px] font-medium text-black/80">
+        <span>Details</span>
+        <span className="text-[#1140c4] transition-transform duration-300 group-hover:translate-x-1">
+          →
+        </span>
+      </div>
+    </Link>
+  ))}
+</div>
 
             
-           <div className="order-4 lg:order-5 mt-6 grid grid-cols-1 sm:grid-cols-2 gap-3">
+           <div className="order-4 lg:order-5 mt-5 grid grid-cols-1 sm:grid-cols-2 gap-3">
 
   {/* PRIMARY CTA */}
   <a
@@ -697,46 +531,19 @@ export function HeroSection() {
 </div>
           </div>
 
-          {/* RIGHT: 3 stacked flip slots */}
-          <div className="relative lg:pt-2 scale-[0.92] md:scale-100">
-            <div className="relative">
-              <div className="relative rounded-[32px] border border-slate-200 shadow-[0_30px_90px_rgba(15,23,42,0.18)] overflow-hidden">
-                <div className="flex flex-col" style={{ aspectRatio: "4 / 5.2" }}>
-                  {slots.map((slot, i) => {
-                    const skew = 48;
-                    const isFirst = i === 0;
-                    const isLast  = i === slots.length - 1;
-                    const clipPath = isFirst
-                      ? `polygon(0 0, 100% 0, 100% calc(100% - ${skew}px), 0 100%)`
-                      : isLast
-                      ? `polygon(0 0, 100% ${skew}px, 100% 100%, 0 100%)`
-                      : `polygon(0 ${skew}px, 100% 0, 100% 100%, 0 calc(100% - ${skew}px))`;
-
-                    return (
-                      <div
-                        key={i}
-                        className="relative w-full"
-                        style={{ flex: 1, clipPath, marginTop: i > 0 ? -skew : 0, zIndex: i + 1 }}
-                      >
-                        <FlipImageSlot
-                          images={slot.images}
-                          slotIndex={i}
-                          label={slot.label}
-                          cardPosition={slot.cardPosition}
-                        />
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
-          </div>
+      <div className="relative flex justify-center lg:justify-end lg:pt-2">
+  <div className="w-full max-w-[820px] aspect-[16/12.8]">
+    <HeroCalendarFlip />
+  </div>
+</div>
 
         </div>
       </div>
 
       {/* ── CONFERENCE MOMENTS ── */}
-      <ConferenceMomentsCarousel />
+      <div className="-mt-2 lg:-mt-6">
+  <ConferenceMomentsCarousel />
+</div>
 
     </section>
   );

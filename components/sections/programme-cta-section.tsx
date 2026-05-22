@@ -41,7 +41,8 @@ export function ProgrammeCtaSection() {
       // slower than scroll = parallax
       const offset = rect.top * -0.38;
 
-      bg.style.transform = `translate3d(0, ${offset}px, 0) scale(1.15)`;
+      bg.style.transform = `translate3d(0, ${offset}px, 0) scale(1.08)`;
+//                                                          ^^^^ was 1.15
 
       frame = requestAnimationFrame(animate);
     };
@@ -56,25 +57,27 @@ export function ProgrammeCtaSection() {
       ref={sectionRef}
       className="relative overflow-hidden"
     >
-      {/* PARALLAX BACKGROUND */}
-      <div
-        ref={bgRef}
-        className="
-          absolute
-          -top-40
-          -bottom-40
-          left-0
-          right-0
-          will-change-transform
-        "
-      >
-        <div
-          className="h-full w-full bg-cover bg-center"
-         style={{
-  backgroundImage: "url('/images/c_banner.jpg')",
-}}
-        />
-      </div>
+  {/* PARALLAX BACKGROUND */}
+<div
+  ref={bgRef}
+  className="absolute -top-40 -bottom-40 left-0 right-0 will-change-transform"
+>
+  <video
+    autoPlay
+    muted
+    loop
+    playsInline
+    poster="/images/c_banner.jpg"
+    style={{
+      width: "100%",
+      height: "100%",
+      objectFit: "cover",
+      objectPosition: "center",
+      display: "block",
+    }}
+    src="/videos/c_banner.mp4"
+  />
+</div>
 
       {/* CONTENT */}
       <div className="relative z-10 flex min-h-[760px] items-center px-4 py-32 sm:px-6 lg:px-12">

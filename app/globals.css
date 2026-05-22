@@ -415,3 +415,14 @@ p {
   animation-timing-function: linear;
   animation-iteration-count: infinite;
 }
+
+.rotate-x-0 {
+  transform: rotateX(0deg);
+}
+
+.rotate-x-\[-90deg\] {
+  transform: rotateX(-90deg);
+}
+.perspective-\[1400px\] {
+  perspective: 1400px;
+}
