@@ -7,6 +7,7 @@ import { PartnersPreview } from "@/components/sections/partners-preview";
 import { StatsBar } from "@/components/sections/stats-bar";
 import { ProgrammeCtaSection } from "@/components/sections/programme-cta-section";
 
+
 export default function HomePage() {
   return (
     <main className="pt-24">
@@ -14,9 +15,12 @@ export default function HomePage() {
       <StatsBar />
       <ProgrammeCtaSection />
       <ConferenceOverview />
+
+  
+
       <TestimonialsPreview />
       <VenuePreview />
-       <EventCountdown />
+      <EventCountdown />
       <PartnersPreview />
     </main>
   );

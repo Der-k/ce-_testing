@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useRef, useState, useCallback } from "react";
 import { ArrowRight, CalendarDays, MapPin } from "lucide-react";
-import { HeroCalendarFlip } from "@/components/ui/HeroCalendarFlip";
+import { CinematicHeroVisual } from "@/components/ui/CinematicHeroVisual";
 
 const categoryImages = {
   solar: [
@@ -533,8 +533,8 @@ export function HeroSection() {
           </div>
 
       <div className="relative flex justify-center lg:justify-end lg:pt-2">
-  <div className="w-full max-w-[820px] aspect-[16/12.8]">
-    <HeroCalendarFlip />
+  <div className="w-full max-w-[900px] aspect-[16/13]">
+    <CinematicHeroVisual />
   </div>
 </div>
 
