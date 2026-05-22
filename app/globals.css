@@ -262,40 +262,40 @@ body {
 /* ===== GLOBAL TYPOGRAPHY SCALE ===== */
 
 h1 {
-  font-size: clamp(3.4rem, 6vw, 5.8rem);
-  line-height: 0.95;
-  letter-spacing: -0.04em;
+  font-size: clamp(2.6rem, 4.8vw, 4.8rem);
+  line-height: 0.92;
+  letter-spacing: -0.045em;
   font-weight: 700;
 }
 
 h2 {
-  font-size: clamp(2.4rem, 4vw, 3.5rem);
-  line-height: 1.05;
+  font-size: clamp(2rem, 3vw, 3rem);
+  line-height: 1;
   letter-spacing: -0.03em;
   font-weight: 700;
 }
 
 h3 {
-  font-size: clamp(1.6rem, 2vw, 2rem);
-  line-height: 1.15;
+  font-size: clamp(1.2rem, 1.5vw, 1.6rem);
+  line-height: 1.08;
   font-weight: 650;
 }
 
 p {
-  font-size: 19px;
-  line-height: 1.7;
+  font-size: 15px;
+  line-height: 1.55;
 }
 
 @media (min-width: 768px) {
   p {
-    font-size: 20px;
+    font-size: 16px;
   }
 }
 
 @media (min-width: 1280px) {
   p {
-    font-size: 21px;
-    line-height: 1.75;
+    font-size: 17px;
+    line-height: 1.6;
   }
 }
 
@@ -425,4 +425,11 @@ p {
 }
 .perspective-\[1400px\] {
   perspective: 1400px;
+}
+
+.landing-scale {
+  transform: scale(0.5);
+  transform-origin: top center;
+  width: 200%;
+  margin-left: -50%;
 }

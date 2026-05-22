@@ -66,17 +66,17 @@ const origins: Record<FlipMode, string> = {
 
 /** Flap rotates to edge-on (90°) — invisible at this point, so we snap the image */
 const endTransforms: Record<FlipMode, string> = {
-  "vertical-down":    "perspective(1800px) rotateX(90deg)",
-  "vertical-up":      "perspective(1800px) rotateX(-90deg)",
-  "horizontal-left":  "perspective(1800px) rotateY(-90deg)",
-  "horizontal-right": "perspective(1800px) rotateY(90deg)",
+  "vertical-down":    "perspective(3000px) rotateX(90deg)",
+  "vertical-up":      "perspective(3000px) rotateX(-90deg)",
+  "horizontal-left":  "perspective(3000px) rotateY(-90deg)",
+  "horizontal-right": "perspective(3000px) rotateY(90deg)",
 };
 
 const flatTransforms: Record<FlipMode, string> = {
-  "vertical-down":    "perspective(1800px) rotateX(0deg)",
-  "vertical-up":      "perspective(1800px) rotateX(0deg)",
-  "horizontal-left":  "perspective(1800px) rotateY(0deg)",
-  "horizontal-right": "perspective(1800px) rotateY(0deg)",
+  "vertical-down":    "perspective(3000px) rotateX(0deg)",
+  "vertical-up":      "perspective(3000px) rotateX(0deg)",
+  "horizontal-left":  "perspective(3000px) rotateY(0deg)",
+  "horizontal-right": "perspective(3000px) rotateY(0deg)",
 };
 
 export function HeroCalendarFlip() {
@@ -174,26 +174,35 @@ export function HeroCalendarFlip() {
   }, [displayIndex]);
 
   return (
+   <div
+  className="relative h-full w-full"
+  style={{
+    perspective: "2200px",
+    transformStyle: "preserve-3d",
+  }}
+>
     <div
-      className="relative h-full w-full"
-      style={{ perspective: "2200px" }}
-    >
-      <div
-        className="
-          relative h-full w-full overflow-hidden
-          rounded-[34px] bg-black
-          shadow-[0_35px_100px_rgba(0,0,0,0.22)]
-        "
-      >
+  className="
+    relative h-full w-full overflow-hidden
+    bg-transparent
+  "
+>
         {/* ── BASE LAYER: destination image, always underneath ── */}
         <Image
-          src={images[displayIndex]}
-          alt="Conference"
-          fill
-          priority
-          className="object-cover"
-        />
+  src={images[displayIndex]}
+  alt="Conference"
+  fill
+  priority
+  quality={100}
+  sizes="100vw"
+ className="object-cover select-none"
+  unoptimized
+  style={{
+  backfaceVisibility: "hidden",
+  transform: "translateZ(0)",
+}}
 
+ />
         {/* ── CAST SHADOW: flap casts a shadow onto the base as it lifts ── */}
         <div
           ref={castShadowRef}
@@ -207,13 +216,22 @@ export function HeroCalendarFlip() {
           className="absolute inset-0 z-20 opacity-0"
           style={{ willChange: "transform, opacity" }}
         >
-          <Image
-            src={images[flapIndex]}
-            alt=""
-            fill
-            className="object-cover"
-            aria-hidden
-          />
+        <Image
+  src={images[flapIndex]}
+  alt=""
+  fill
+  quality={100}
+  sizes="100vw"
+ className="object-cover select-none"
+  aria-hidden
+  style={{
+  backfaceVisibility: "hidden",
+  transform: "translateZ(0)",
+  willChange: "transform, opacity",
+  transformStyle: "preserve-3d",
+  
+}}
+/>
 
           {/* Directional shadow — darkens far edge as card tilts */}
           <div

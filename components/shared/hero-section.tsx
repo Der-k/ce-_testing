@@ -193,9 +193,10 @@ function ConferenceMomentsCarousel() {
   }, []);
 
   return (
+    
     <div className="relative w-full mt-10 overflow-hidden bg-[#003994]">
 
-      <div className="flex items-center justify-between px-4 sm:px-6 py-3 border-b border-white/10">
+      <div className="flex items-center justify-between px-4 sm:px-6 py-2.5 border-b border-white/10">
         <div className="flex items-center gap-2 sm:gap-3 min-w-0">
           <span className="text-[10px] font-semibold uppercase tracking-[0.18em] sm:tracking-[0.22em] text-white/60 shrink-0">
             Conference Moments
@@ -312,7 +313,7 @@ export function HeroSection() {
 
   <div className="relative h-[1100px] w-[1100px] opacity-30">
     <Image
-      src="/images/logo_3.png"
+      src="/images/logo.png"
       alt="Background Logo Top Left"
       fill
       priority
@@ -347,7 +348,7 @@ export function HeroSection() {
       <div className="absolute inset-x-0 top-0 h-px bg-slate-200" />
 
       {/* ── ROW 1: heading + image ── */}
-      <div className="relative z-20 mx-auto max-w-[1500px] px-4 pt-4 md:px-6 lg:px-10 lg:pt-5">
+      <div className="relative z-20 mx-auto max-w-[1700px] px-4 pt-4 md:px-6 lg:px-10 lg:pt-5">
         <div className="flex flex-col lg:grid lg:grid-cols-[minmax(0,1.05fr)_minmax(720px,1fr)] lg:gap-14 items-start gap-8">
 
           {/* LEFT */}
@@ -370,7 +371,7 @@ export function HeroSection() {
       key={edition.name}
       href={edition.href}
     className={`
-  group relative block rounded-xl bg-white px-4 py-3
+  group relative block rounded-xl bg-white px-4 py-2.5
   border transition-all duration-300
   hover:scale-[1.02]
 
@@ -423,7 +424,7 @@ export function HeroSection() {
     rel="noopener noreferrer"
     className="
       group relative inline-flex items-center justify-center gap-2
-      rounded-full px-7 py-3 text-base font-semibold text-white
+      rounded-full px-5 py-2.5 text-base font-semibold text-white
 
       bg-gradient-to-r from-[#02026e] via-[#1140c4] to-[#02026e]
       bg-[length:200%_100%] bg-left
@@ -453,7 +454,7 @@ export function HeroSection() {
     href="/event/programme"
     className="
       group relative inline-flex items-center justify-center gap-2
-      rounded-full px-7 py-3 text-base font-semibold
+      rounded-full px-5 py-2.5 text-base font-semibold
 
       text-[#02026e]
       bg-white/70 backdrop-blur-md
@@ -482,7 +483,7 @@ export function HeroSection() {
   href="/partners/become-a-partner"
   className="
     group relative inline-flex items-center justify-center gap-2
-    rounded-full px-7 py-3 text-base font-semibold text-[#1f1f1f]
+    rounded-full px-5 py-2.5 text-base font-semibold text-[#1f1f1f]
 
     bg-gradient-to-r from-[#d4af00] via-[#fad202] to-[#d4af00]
     bg-[length:200%_100%] bg-left
