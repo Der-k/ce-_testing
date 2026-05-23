@@ -104,23 +104,20 @@ export function CinematicHeroVisual() {
               ease: "linear",
             }}
           >
-            <div className="absolute inset-0 flex items-center justify-center">
-              <object
-  data={currentSlide.src}
-  type="image/svg+xml"
-  className="
-    w-full
-    h-full
-    object-cover
-    select-none
-    pointer-events-none
-    contrast-[1.04]
-    brightness-[0.98]
-    saturate-[1.06]
-  "
-  aria-label={currentSlide.alt}
-/>
-            </div>
+          <div className="absolute inset-0 flex items-center justify-center">
+  <object
+    key={currentSlide.src}
+    data={currentSlide.src}
+    type="image/svg+xml"
+    className="
+      w-full
+      h-full
+      object-cover
+      select-none
+      pointer-events-none
+    "
+  />
+</div>
           </motion.div>
 
           {/* ATMOSPHERIC OVERLAY */}
