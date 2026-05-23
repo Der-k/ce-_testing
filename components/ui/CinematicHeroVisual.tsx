@@ -104,18 +104,11 @@ export function CinematicHeroVisual() {
               ease: "linear",
             }}
           >
-          <div className="absolute inset-0 flex items-center justify-center">
-  <object
+       <div className="absolute inset-0 overflow-hidden">
+  <iframe
     key={currentSlide.src}
-    data={currentSlide.src}
-    type="image/svg+xml"
-    className="
-      w-full
-      h-full
-      object-cover
-      select-none
-      pointer-events-none
-    "
+    src={currentSlide.src}
+    className="w-full h-full border-0 pointer-events-none"
   />
 </div>
           </motion.div>
