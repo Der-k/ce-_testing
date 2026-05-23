@@ -96,7 +96,7 @@ export function CinematicHeroVisual() {
               ease: "linear",
             }}
           >
-  <div className="absolute inset-0 overflow-hidden">
+<div className="absolute inset-0 overflow-hidden">
   <video
     key={currentSlide.src}
     src={currentSlide.src}
@@ -104,6 +104,8 @@ export function CinematicHeroVisual() {
     muted
     loop
     playsInline
+    preload="auto"
+    disablePictureInPicture
     className="w-full h-full object-cover"
   />
 </div>
