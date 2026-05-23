@@ -6,20 +6,12 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const slides = [
   {
-    src: "/images/hero-1.svg",
+    src: "/images/hero-1.mp4",
     alt: "Solar energy graphic",
   },
   {
-    src: "/images/hero-2.svg",
+    src: "/images/hero-2.mp4",
     alt: "Conference networking graphic",
-  },
-  {
-    src: "/images/hero-3.svg",
-    alt: "Geothermal operations graphic",
-  },
-  {
-    src: "/images/hero-4.svg",
-    alt: "Mining innovation graphic",
   },
 ];
 
@@ -104,11 +96,15 @@ export function CinematicHeroVisual() {
               ease: "linear",
             }}
           >
-       <div className="absolute inset-0 overflow-hidden">
-  <iframe
+  <div className="absolute inset-0 overflow-hidden">
+  <video
     key={currentSlide.src}
     src={currentSlide.src}
-    className="w-full h-full border-0 pointer-events-none"
+    autoPlay
+    muted
+    loop
+    playsInline
+    className="w-full h-full object-cover"
   />
 </div>
           </motion.div>

@@ -305,43 +305,33 @@ export function HeroSection() {
   return (
     <section className="relative overflow-hidden bg-white min-h-[100svh] lg:min-h-[calc(100vh-96px)]">
 
-{/* Decorative background layer (IMPORTANT: isolates positioning) */}
-<div className="absolute inset-0 bottom-[220px] z-[1] pointer-events-none overflow-hidden">
+{/* Decorative background layer */}
+<div className="absolute inset-x-0 top-0 h-[78%] z-[1] pointer-events-none overflow-hidden">
 
-  {/* TOP-LEFT LOGO */}
-<div className="absolute -top-24 -left-44 pointer-events-none z-0">
-
-  <div className="relative h-[1100px] w-[1100px] opacity-30">
-    <Image
-      src="/images/logo.png"
-      alt="Background Logo Top Left"
-      fill
-      priority
-      className="object-contain saturate-125"
-    />
+  {/* TOP LEFT */}
+  <div className="absolute -top-20 -left-32">
+    <div className="relative h-[700px] w-[700px] opacity-[0.08]">
+      <Image
+        src="/images/logo.png"
+        alt="Background Logo"
+        fill
+        priority
+        className="object-contain"
+      />
+    </div>
   </div>
-</div>
 
-<div className="absolute inset-0 z-[1] pointer-events-none"></div>
-{/* BOTTOM-RIGHT LOGO */}
-<div className="absolute bottom-[180px] right-[-140px] pointer-events-none z-0">
-
-
-<div className="relative h-[620px] w-[620px] opacity-[0.22]">
-    <Image
-      src="/images/bg_1.png"
-      alt="Background Logo Bottom Right"
-      fill
-      className="object-contain saturate-150"
-    />
+  {/* BOTTOM RIGHT */}
+  <div className="absolute bottom-10 right-[-80px]">
+    <div className="relative h-[420px] w-[420px] opacity-[0.07]">
+      <Image
+        src="/images/bg_1.png"
+        alt="Background Accent"
+        fill
+        className="object-contain"
+      />
+    </div>
   </div>
-</div>
-  
-
-
-
-
-
 
 </div>
       <div className="absolute inset-0 bg-[linear-gradient(to_bottom,white_0%,white_62%,#f8fafc_100%)]" />
