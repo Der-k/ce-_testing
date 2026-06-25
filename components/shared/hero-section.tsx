@@ -274,7 +274,7 @@ export function HeroSection() {
   const slide = slides[current];
 
   return (
-    <div style={{ paddingTop: "96px", background: "#ffffff" }}>
+    <div style={{ background: "#ffffff", isolation: "isolate" }}>
 
       {/* ── CAROUSEL ── */}
       <section className="relative w-full overflow-hidden" style={{ height: "clamp(480px,60vw,720px)" }}>
@@ -325,10 +325,10 @@ export function HeroSection() {
       </section>
 
       {/* ── INFO BAR — pure white ── */}
-      <div style={{ background: "#ffffff", borderTop: "1px solid #f1f5f9" }}>
+      <div style={{ background: "#ffffff", borderTop: "1px solid #f1f5f9", position: "relative", zIndex: 10, isolation: "isolate" }}>
 
         {/* Stats */}
-        <div style={{ borderBottom: "1px solid #f1f5f9" }}>
+        <div style={{ borderBottom: "1px solid #f1f5f9", background: "#ffffff" }}>
           <div className="mx-auto max-w-[1400px] px-6 sm:px-10 lg:px-16">
             <div className="grid grid-cols-2 sm:grid-cols-4" style={{ borderLeft: "1px solid #f1f5f9" }}>
               {stats.map(({ icon: Icon, value, label, href }) => (
@@ -356,7 +356,7 @@ export function HeroSection() {
         </div>
 
         {/* Quick links */}
-        <div className="mx-auto max-w-[1400px] px-6 sm:px-10 lg:px-16">
+        <div className="mx-auto max-w-[1400px] px-6 sm:px-10 lg:px-16" style={{ background: "#ffffff" }}>
           <div className="flex flex-wrap items-center gap-x-1 py-3">
             {quickLinks.map((link, i) => (
               <span key={link.label} className="flex items-center">
