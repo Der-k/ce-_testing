@@ -2,541 +2,461 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useEffect, useRef, useState, useCallback } from "react";
-import { ArrowRight, CalendarDays, MapPin } from "lucide-react";
-import { CinematicHeroVisual } from "@/components/ui/CinematicHeroVisual";
+import { useEffect, useState } from "react";
+import { CalendarDays, MapPin, ArrowRight, Users, Globe, Mic, Building2 } from "lucide-react";
 
-const categoryImages = {
-  solar: [
-    { src: "/gifs/solar-1.gif", alt: "Solar energy" },
-    { src: "/gifs/solar-2.gif", alt: "Solar panels" },
-    { src: "/gifs/solar-3.gif", alt: "Solar farm" },
-    { src: "/gifs/solar-4.gif", alt: "Solar farm" },
-  ],
-  geothermal: [
-    { src: "/gifs/geo-1.gif", alt: "Geothermal energy" },
-    { src: "/gifs/geo-2.gif", alt: "Hydrothermal plant" },
-    { src: "/gifs/geo-3.gif", alt: "Geothermal steam" },
-    { src: "/gifs/geo-4.gif", alt: "Geothermal steam" },
-  ],
-  mining: [
-    { src: "/gifs/mining-1.gif", alt: "Mining operations" },
-    { src: "/gifs/mining-2.gif", alt: "Mine site" },
-    { src: "/gifs/mining-3.gif", alt: "Clean mining" },
-    { src: "/gifs/mining-4.gif", alt: "Clean mining" },
-  ],
-};
-
-const carouselImages = [
-  { src: "/images/hero-carousel-1.jpeg", alt: "Delegates networking" },
-  { src: "/images/hero-carousel-2.jpeg", alt: "Panel session" },
-  { src: "/images/hero-carousel-3.jpeg", alt: "Audience keynote" },
-  { src: "/images/hero-carousel-4.jpeg", alt: "Exhibition area" },
-  { src: "/images/hero-carousel-5.jpeg", alt: "Speaker presentation" },
-  { src: "/images/hero-carousel-6.jpeg", alt: "Networking event" },
-  { src: "/images/hero-carousel-7.jpeg", alt: "Conference hall" },
-  { src: "/images/hero-carousel-8.jpeg", alt: "Energy discussion" },
-];
-
-// ─── Inject Ken Burns + animation keyframes once, client-side only ─────────────
-const injectSlotStyles = (() => {
+// ── Inject keyframes once on the client ──────────────────────────────────────
+const injectStyles = (() => {
   let done = false;
   return () => {
     if (done || typeof document === "undefined") return;
     done = true;
     const el = document.createElement("style");
-    el.id = "__slot-styles";
     el.textContent = [
-      // Ken Burns
-      "@keyframes kb0{0%{transform:scale(1) translate(0%,0%)}100%{transform:scale(1.09) translate(-1.6%,-1.6%)}}",
-      "@keyframes kb1{0%{transform:scale(1) translate(0%,0%)}100%{transform:scale(1.09) translate( 1.6%, 1.6%)}}",
-      "@keyframes kb2{0%{transform:scale(1) translate(0%,0%)}100%{transform:scale(1.09) translate( 1.6%,-1.6%)}}",
-      // Entrance animations
-      "@keyframes heroFadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}",
-      "@keyframes heroFadeIn{from{opacity:0}to{opacity:1}}",
-      // Card shimmer sweep
-      "@keyframes cardShimmer{0%{left:-120%}100%{left:120%}}",
-      // CTA glow pulse
-      "@keyframes ctaPulseGlow{0%,100%{box-shadow:0 12px 35px rgba(2,2,110,.35)}50%{box-shadow:0 18px 55px rgba(17,64,196,.55)}}",
-      "@keyframes ctaGoldPulse{0%,100%{box-shadow:0 12px 35px rgba(250,210,2,.30)}50%{box-shadow:0 18px 60px rgba(250,210,2,.50)}}",
-      // Edition card border pulse
-      "@keyframes borderPulseBlue{0%,100%{border-color:#93a4ff}50%{border-color:#4a60ff}}",
-      "@keyframes borderPulseGreen{0%,100%{border-color:#6ee7b7}50%{border-color:#10b981}}",
+      "@keyframes ctaPulseGlow{0%,100%{box-shadow:0 12px 35px rgba(2,2,110,.55)}50%{box-shadow:0 18px 55px rgba(17,64,196,.75)}}",
+      "@keyframes ctaGoldPulse{0%,100%{box-shadow:0 12px 35px rgba(250,210,2,.45)}50%{box-shadow:0 20px 60px rgba(250,210,2,.65)}}",
+      "@keyframes shimmer{0%{left:-120%}100%{left:120%}}",
     ].join("");
     document.head.appendChild(el);
   };
 })();
 
-const editions = [
+type TextSlide = {
+  kind: "text";
+  src: string;
+  alt: string;
+  headline: string;
+  sub: string;
+  cta: { label: string; href: string };
+};
+
+type CardsSlide = {
+  kind: "cards";
+  src: string;
+  alt: string;
+  headline: string;
+  sub: string;
+  editions: {
+    name: string;
+    date: string;
+    venue: string;
+    country: string;
+    href: string;
+    color: string;
+  }[];
+  buttons: { label: string; href: string; style: "primary" | "outline" | "gold" }[];
+};
+
+type Slide = TextSlide | CardsSlide;
+
+const slides: Slide[] = [
   {
-    name: "Kigali Edition",
-    date: "6–7 August 2026",
-    venue: "Kigali Marriott Hotel, Rwanda",
-    accent: "text-[#02026e]",
-    href: "/conference?edition=kigali",
+    kind: "text",
+    src: "/images/hero-carousel-1.jpeg",
+    alt: "Delegates networking",
+    headline: "Clean Energy\nConference 2026",
+    sub: "Kigali & Perth editions bringing together policymakers, investors, and industry leaders to accelerate clean energy transition.",
+    cta: { label: "Register Now", href: "/get-tickets" },
   },
   {
-    name: "Perth Edition",
-    date: "31 Aug – 1 Sept 2026",
-    venue: "Novotel Hotel Perth, Western Australia",
-    accent: "text-emerald-600",
-    href: "/conference?edition=perth",
+    kind: "cards",
+    src: "/images/hero-carousel-2.jpeg",
+    alt: "Panel session",
+    headline: "Two Editions.\nOne Mission.",
+    sub: "Choose your destination and be part of Africa and Australia's leading clean energy event.",
+    editions: [
+      { name: "Kigali Edition", date: "6–7 August 2026", venue: "Kigali Marriott Hotel, Rwanda", country: "RWA", href: "/conference?edition=kigali", color: "#a5b4fc" },
+      { name: "Perth Edition", date: "31 Aug – 1 Sept 2026", venue: "Novotel Hotel Perth, Australia", country: "AUS", href: "/conference?edition=perth", color: "#6ee7b7" },
+    ],
+    buttons: [
+      { label: "Register Now", href: "/get-tickets", style: "primary" },
+      { label: "View Programme", href: "/event/programme", style: "outline" },
+      { label: "Become a Partner", href: "/partners/become-a-partner", style: "gold" },
+    ],
+  },
+  {
+    kind: "text",
+    src: "/images/hero-carousel-3.jpeg",
+    alt: "Audience keynote",
+    headline: "Solar, Geothermal\n& Clean Mining",
+    sub: "Three focused tracks covering the sectors driving Africa and Australia's energy future.",
+    cta: { label: "View Programme", href: "/event/programme" },
+  },
+  {
+    kind: "text",
+    src: "/images/hero-carousel-4.jpeg",
+    alt: "Exhibition area",
+    headline: "80+ Speakers\n40+ Countries",
+    sub: "World-class keynotes, panel debates and executive dialogues shaping the clean energy agenda.",
+    cta: { label: "See Speakers", href: "/speakers" },
+  },
+  {
+    kind: "text",
+    src: "/images/hero-carousel-5.jpeg",
+    alt: "Speaker presentation",
+    headline: "Unrivalled\nNetworking",
+    sub: "Two days of high-level meetings, deal-making sessions and networking events across both editions.",
+    cta: { label: "Register Now", href: "/get-tickets" },
+  },
+  {
+    kind: "text",
+    src: "/images/hero-carousel-6.jpeg",
+    alt: "Networking event",
+    headline: "Become a\nConference Partner",
+    sub: "Align your brand with Africa and Australia's most important clean energy gathering of 2026.",
+    cta: { label: "Partner With Us", href: "/partners/become-a-partner" },
+  },
+  {
+    kind: "text",
+    src: "/images/hero-carousel-7.jpeg",
+    alt: "Conference hall",
+    headline: "Africa × Australia\nEnergy Collaboration",
+    sub: "Building bridges between two continents to accelerate the global clean energy transition.",
+    cta: { label: "Learn More", href: "/about" },
+  },
+  {
+    kind: "text",
+    src: "/images/hero-carousel-8.jpeg",
+    alt: "Energy discussion",
+    headline: "2,000+ Delegates\nExpected in 2026",
+    sub: "Join government ministers, CEOs, and investors from across the clean energy value chain.",
+    cta: { label: "Register Now", href: "/get-tickets" },
   },
 ];
 
-// ─── Global coordinator ───────────────────────────────────────────────────────
-const slotCallbacks: Array<(() => void) | null> = [null, null, null];
-function registerSlot(index: number, cb: () => void) {
-  slotCallbacks[index] = cb;
-}
+const stats = [
+  { icon: Users,    value: "2,000+", label: "Delegates",      href: "/about" },
+  { icon: Globe,    value: "40+",    label: "Countries",       href: "/about" },
+  { icon: Mic,      value: "80+",    label: "Speakers",        href: "/speakers" },
+  { icon: Building2,value: "2",      label: "Host Cities",     href: "/conference" },
+];
 
-// ─── ConferenceMomentsCarousel ─────────────────────────────────────────────────
-const MARQUEE_BASE_SPEED = 0.7;
-const MOMENTUM_DECAY     = 0.90;
-const MIN_VELOCITY       = 0.15;
+const quickLinks = [
+  { label: "Register",       href: "/get-tickets" },
+  { label: "Programme",      href: "/event/programme" },
+  { label: "Speakers",       href: "/speakers" },
+  { label: "Become a Partner", href: "/partners/become-a-partner" },
+  { label: "Kigali Edition", href: "/conference?edition=kigali" },
+  { label: "Perth Edition",  href: "/conference?edition=perth" },
+];
 
-function ConferenceMomentsCarousel() {
-  const wrapperRef = useRef<HTMLDivElement>(null);
-  const marqueeRef = useRef<HTMLDivElement>(null);
-  const dotsRef    = useRef<HTMLDivElement>(null);
-  const nudgeRef   = useRef<(dir: "prev" | "next") => void>(() => {});
+const INTERVAL = 6000;
 
-  useEffect(() => {
-    const wrapper = wrapperRef.current;
-    const strip   = marqueeRef.current;
-    const dotsCtr = dotsRef.current;
-    if (!wrapper || !strip || !dotsCtr) return;
-
-    let pos        = 0;
-    let vel        = 0;
-    let dragging   = false;
-    let lastX      = 0;
-    let lastT      = 0;
-    let halfW      = 0;
-    let cardW      = 0;
-    let activeIdx  = 0;
-    let raf: number;
-
-    const measure = () => {
-      halfW = strip.scrollWidth / 2;
-      if (strip.children.length >= 2) {
-        const a = strip.children[0] as HTMLElement;
-        const b = strip.children[1] as HTMLElement;
-        cardW = b.offsetLeft - a.offsetLeft;
-      }
-    };
-    requestAnimationFrame(measure);
-
-    const updateDots = (idx: number) => {
-      const dots = dotsCtr.children;
-      for (let i = 0; i < dots.length; i++) {
-        const d = dots[i] as HTMLElement;
-        d.style.width      = i === idx ? "22px" : "6px";
-        d.style.background = i === idx ? "white" : "rgba(255,255,255,0.3)";
-      }
-    };
-
-    const tick = () => {
-      if (!halfW) measure();
-      vel = Math.abs(vel) > MIN_VELOCITY ? vel * MOMENTUM_DECAY : 0;
-      if (!dragging) pos -= MARQUEE_BASE_SPEED + vel;
-      if (pos <= -halfW) pos += halfW;
-      if (pos > 0)       pos -= halfW;
-      strip.style.transform = `translateX(${pos}px)`;
-      if (cardW > 0) {
-        const n   = carouselImages.length;
-        const raw = Math.round((-pos + window.innerWidth / 2 - cardW / 2) / cardW);
-        const idx = ((raw % n) + n) % n;
-        if (idx !== activeIdx) { activeIdx = idx; updateDots(idx); }
-      }
-      raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-
-    nudgeRef.current = (dir) => { vel = dir === "prev" ? 6 : -6; };
-
-    const onTouchStart = (e: TouchEvent) => {
-      dragging = true; lastX = e.touches[0].clientX; lastT = performance.now(); vel = 0;
-    };
-    const onTouchMove = (e: TouchEvent) => {
-      if (!dragging) return;
-      const now = performance.now();
-      const dx  = e.touches[0].clientX - lastX;
-      pos += dx; vel = -(dx / Math.max(now - lastT, 1)) * 16;
-      lastX = e.touches[0].clientX; lastT = now;
-    };
-    const onTouchEnd = () => { dragging = false; };
-
-    const onMouseDown = (e: MouseEvent) => {
-      dragging = true; lastX = e.clientX; lastT = performance.now(); vel = 0;
-      wrapper.style.cursor = "grabbing";
-    };
-    const onMouseMove = (e: MouseEvent) => {
-      if (!dragging) return;
-      const now = performance.now();
-      const dx  = e.clientX - lastX;
-      pos += dx; vel = -(dx / Math.max(now - lastT, 1)) * 16;
-      lastX = e.clientX; lastT = now;
-    };
-    const onMouseUp = () => { dragging = false; wrapper.style.cursor = "grab"; };
-
-    wrapper.addEventListener("touchstart",  onTouchStart, { passive: true });
-    wrapper.addEventListener("touchmove",   onTouchMove,  { passive: true });
-    wrapper.addEventListener("touchend",    onTouchEnd,   { passive: true });
-    wrapper.addEventListener("touchcancel", onTouchEnd,   { passive: true });
-    wrapper.addEventListener("mousedown",   onMouseDown);
-    window.addEventListener("mousemove",    onMouseMove);
-    window.addEventListener("mouseup",      onMouseUp);
-
-    return () => {
-      cancelAnimationFrame(raf);
-      wrapper.removeEventListener("touchstart",  onTouchStart);
-      wrapper.removeEventListener("touchmove",   onTouchMove);
-      wrapper.removeEventListener("touchend",    onTouchEnd);
-      wrapper.removeEventListener("touchcancel", onTouchEnd);
-      wrapper.removeEventListener("mousedown",   onMouseDown);
-      window.removeEventListener("mousemove",    onMouseMove);
-      window.removeEventListener("mouseup",      onMouseUp);
-    };
-  }, []);
-
+function CardsContent({ slide }: { slide: CardsSlide }) {
   return (
-    <div className="relative w-full mt-10 overflow-hidden bg-[#020266]">
-      <div className="flex items-center justify-between px-4 sm:px-6 py-2.5 border-b border-white/10">
-        <div className="flex items-center gap-2 sm:gap-3 min-w-0">
-          <span className="text-[10px] font-semibold uppercase tracking-[0.18em] sm:tracking-[0.22em] text-white/60 shrink-0">
-            Conference Moments
-          </span>
-          <span className="hidden sm:block h-px w-8 bg-white/20 shrink-0" />
-          <span className="hidden md:block text-[10px] text-white/40 truncate">
-            Highlights from previous editions and industry gatherings
-          </span>
-        </div>
-        <div className="flex items-center gap-1.5 shrink-0">
-          <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-          <span className="text-[10px] text-white/50 uppercase tracking-widest">Live 2026</span>
-        </div>
-      </div>
-
-      <div ref={wrapperRef} className="relative pt-2 pb-1">
-        <div className="overflow-hidden">
-          <div
-            ref={marqueeRef}
-            className="flex w-max will-change-transform"
-            style={{ gap: "clamp(10px, 1.5vw, 16px)", paddingLeft: 16, paddingRight: 16 }}
+    <div
+      className="absolute inset-0 z-20 flex flex-col justify-center"
+      style={{ paddingLeft: "clamp(48px, 6vw, 90px)", paddingRight: "clamp(48px, 6vw, 90px)" }}
+    >
+      <h1
+        className="font-heading font-bold text-white"
+        style={{ fontSize: "clamp(1.5rem, 3vw, 2.4rem)", lineHeight: 1.08, whiteSpace: "pre-line" }}
+      >
+        {slide.headline}
+      </h1>
+      <p className="mt-1.5 text-white/75 max-w-sm" style={{ fontSize: "clamp(0.75rem, 1vw, 0.88rem)" }}>
+        {slide.sub}
+      </p>
+      <div className="mt-4 flex flex-wrap gap-3">
+        {slide.editions.map((ed) => (
+          <Link
+            key={ed.name}
+            href={ed.href}
+            className="group flex flex-col rounded-xl border border-white/25 bg-white/10 backdrop-blur-sm px-4 py-3 min-w-[170px] hover:bg-white/20 transition-all duration-200 hover:scale-[1.03]"
           >
-            {[...carouselImages, ...carouselImages].map((image, index) => (
-              <div
-                key={`${image.src}-${index}`}
-                className="relative shrink-0 overflow-hidden rounded-2xl"
-                style={{ width: "clamp(260px, 38vw, 520px)", height: "clamp(174px, 25.3vw, 347px)" }}
-              >
-                <Image
-                  src={image.src} alt={image.alt} fill
-                  sizes="(max-width: 640px) 80vw, (max-width: 1024px) 38vw, 520px"
-                  className="object-cover pointer-events-none"
-                  draggable={false}
-                  priority={index < 3}
-                />
-                <div className="absolute inset-x-0 bottom-0 h-14 bg-gradient-to-t from-black/55 to-transparent pointer-events-none" />
-                <span className="absolute bottom-2.5 left-3.5 text-[10px] font-semibold text-white/75 tracking-widest uppercase pointer-events-none">
-                  {image.alt}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="pointer-events-none absolute inset-y-0 left-0 w-14 sm:w-20 bg-gradient-to-r from-[#020266] to-transparent z-10" />
-        <button
-          onClick={() => nudgeRef.current("prev")}
-          aria-label="Previous"
-          className="pointer-events-auto absolute left-2 sm:left-3 top-1/2 -translate-y-1/2 z-20
-            hidden sm:flex h-11 w-11 items-center justify-center rounded-full
-            bg-white text-[#020266] shadow-[0_4px_20px_rgba(0,0,0,0.4)]
-            transition-all duration-150 active:scale-90 hover:scale-110 touch-manipulation"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-          </svg>
-        </button>
-
-        <div className="pointer-events-none absolute inset-y-0 right-0 w-14 sm:w-20 bg-gradient-to-l from-[#020266] to-transparent z-10" />
-        <button
-          onClick={() => nudgeRef.current("next")}
-          aria-label="Next"
-          className="pointer-events-auto absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 z-20
-            hidden sm:flex h-11 w-11 items-center justify-center rounded-full
-            bg-white text-[#020266] shadow-[0_4px_20px_rgba(0,0,0,0.4)]
-            transition-all duration-150 active:scale-90 hover:scale-110 touch-manipulation"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-          </svg>
-        </button>
-      </div>
-
-      <div ref={dotsRef} className="flex justify-center items-center gap-1.5 pb-1">
-        {carouselImages.map((_, i) => (
-          <button
-            key={i}
-            aria-label={`Image ${i + 1}`}
-            className="touch-manipulation"
-            style={{
-              width: i === 0 ? "22px" : "6px", height: "6px",
-              borderRadius: "3px",
-              background: i === 0 ? "white" : "rgba(255,255,255,0.3)",
-              border: "none", padding: 0, cursor: "pointer", flexShrink: 0,
-              transition: "width 0.25s cubic-bezier(0.4,0,0.2,1), background 0.25s ease",
-            }}
-          />
+            <div className="flex items-center justify-between mb-1.5">
+              <span className="text-[10px] font-bold uppercase tracking-[0.22em]" style={{ color: ed.color }}>
+                {ed.name.replace(" Edition", "")}
+              </span>
+              <span className="text-[10px] text-white/40 font-mono">{ed.country}</span>
+            </div>
+            <div className="flex items-center gap-1.5 text-[12px] text-white/85 font-medium">
+              <CalendarDays className="h-3 w-3 text-white/45 shrink-0" />
+              {ed.date}
+            </div>
+            <div className="mt-0.5 flex items-center gap-1.5 text-[11px] text-white/50">
+              <MapPin className="h-3 w-3 shrink-0" />
+              {ed.venue.split(",")[0]}
+            </div>
+            <div className="mt-2 flex items-center gap-1 text-[11px] font-semibold text-white/50 group-hover:text-white/80 transition-colors">
+              Details <ArrowRight className="h-3 w-3" />
+            </div>
+          </Link>
         ))}
+      </div>
+      <div className="mt-4 flex flex-wrap gap-2.5">
+        {slide.buttons.map((btn) => {
+          if (btn.style === "primary") {
+            return (
+              <Link
+                key={btn.label}
+                href={btn.href}
+                className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full border border-white/70 bg-transparent px-5 py-2 text-[11px] font-bold uppercase tracking-[0.16em] text-white transition-all duration-300 hover:scale-105 hover:bg-white hover:text-black active:scale-95"
+                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.animation = "ctaPulseGlow 2s ease infinite"; }}
+                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.animation = ""; }}
+              >
+                <span className="pointer-events-none absolute -left-[120%] top-0 h-full w-[60%] rotate-12 bg-white/20 blur-md transition-[left] duration-700 group-hover:left-[120%]" />
+                <span className="relative z-10">{btn.label}</span>
+                <ArrowRight className="relative z-10 h-3 w-3 transition-transform duration-200 group-hover:translate-x-0.5" />
+              </Link>
+            );
+          }
+          if (btn.style === "gold") {
+            return (
+              <Link
+                key={btn.label}
+                href={btn.href}
+                className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full px-5 py-2 text-[11px] font-bold uppercase tracking-[0.16em] text-[#1a1200] transition-all duration-300 hover:scale-105 active:scale-95"
+                style={{ background: "linear-gradient(135deg,#d4af00,#fad202)", boxShadow: "0 6px 20px rgba(250,210,2,0.35)" }}
+                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.animation = "ctaGoldPulse 2s ease infinite"; }}
+                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.animation = ""; (e.currentTarget as HTMLElement).style.boxShadow = "0 6px 20px rgba(250,210,2,0.35)"; }}
+              >
+                <span className="pointer-events-none absolute -left-[120%] top-0 h-full w-[60%] rotate-12 bg-white/30 blur-md transition-[left] duration-700 group-hover:left-[120%]" />
+                <span className="relative z-10">{btn.label}</span>
+                <ArrowRight className="relative z-10 h-3 w-3 transition-transform duration-200 group-hover:translate-x-0.5" />
+              </Link>
+            );
+          }
+          // outline
+          return (
+            <Link
+              key={btn.label}
+              href={btn.href}
+              className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full border border-white/40 bg-white/10 px-5 py-2 text-[11px] font-bold uppercase tracking-[0.16em] text-white backdrop-blur-sm transition-all duration-200 hover:scale-105 hover:bg-white/25 active:scale-95"
+            >
+              <span className="pointer-events-none absolute -left-[120%] top-0 h-full w-[60%] rotate-12 bg-white/15 blur-md transition-[left] duration-700 group-hover:left-[120%]" />
+              <span className="relative z-10">{btn.label}</span>
+              <ArrowRight className="relative z-10 h-3 w-3 transition-transform duration-200 group-hover:translate-x-0.5" />
+            </Link>
+          );
+        })}
       </div>
     </div>
   );
 }
 
-// ─── HeroSection ──────────────────────────────────────────────────────────────
-export function HeroSection() {
-  // Inject all keyframes on mount
-  useEffect(() => {
-    injectSlotStyles();
-  }, []);
+function TextContent({ slide }: { slide: TextSlide }) {
+  return (
+    <div
+      className="absolute inset-0 z-20 flex flex-col justify-center"
+      style={{ paddingLeft: "clamp(48px, 6vw, 90px)", paddingRight: "clamp(80px, 18vw, 260px)" }}
+    >
+      <h1
+        className="font-heading font-bold text-white"
+        style={{ fontSize: "clamp(1.8rem, 4vw, 3.4rem)", lineHeight: 1.08, whiteSpace: "pre-line" }}
+      >
+        {slide.headline}
+      </h1>
+      <p className="mt-3 text-white/85 leading-snug max-w-sm" style={{ fontSize: "clamp(0.78rem, 1.1vw, 0.95rem)" }}>
+        {slide.sub}
+      </p>
+      <div className="mt-5">
+        <a
+          href={slide.cta.href}
+          className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full border border-white/70 bg-transparent px-5 py-2 text-[11px] font-bold uppercase tracking-[0.18em] text-white transition-all duration-300 hover:scale-105 hover:bg-white hover:text-black active:scale-95"
+          onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.animation = "ctaPulseGlow 2s ease infinite"; }}
+          onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.animation = ""; }}
+        >
+          <span className="pointer-events-none absolute -left-[120%] top-0 h-full w-[60%] rotate-12 bg-white/20 blur-md transition-[left] duration-700 group-hover:left-[120%]" />
+          <span className="relative z-10">{slide.cta.label}</span>
+          <ArrowRight className="relative z-10 h-3 w-3 transition-transform duration-200 group-hover:translate-x-0.5" />
+        </a>
+      </div>
+    </div>
+  );
+}
 
-  const slots = [
-    { images: categoryImages.solar,      label: "Solar",                     cardPosition: "top-left"     as const },
-    { images: categoryImages.geothermal, label: "Geothermal & Hydrothermal", cardPosition: "bottom-right" as const },
-    { images: categoryImages.mining,     label: "Mining",                    cardPosition: "bottom-left"  as const },
-  ];
+export function HeroSection() {
+  const [current, setCurrent]         = useState(0);
+  const [prev, setPrev]               = useState<number | null>(null);
+  const [textVisible, setTextVisible] = useState(true);
+
+  useEffect(() => { injectStyles(); }, []);
+
+  const go = (next: number) => {
+    setTextVisible(false);
+    setTimeout(() => {
+      setPrev(current);
+      setCurrent(next);
+      setTimeout(() => setTextVisible(true), 120);
+      setTimeout(() => setPrev(null), 1000);
+    }, 300);
+  };
+
+  const goNext = () => go((current + 1) % slides.length);
+  const goPrev = () => go((current - 1 + slides.length) % slides.length);
+
+  useEffect(() => {
+    const t = setInterval(goNext, INTERVAL);
+    return () => clearInterval(t);
+  }, [current]);
+
+  const slide = slides[current];
 
   return (
-    <section className="relative overflow-hidden bg-white">
+    <div className="w-full">
 
-      {/* Decorative background layer */}
-      <div className="absolute inset-x-0 top-0 h-[78%] z-[1] pointer-events-none overflow-hidden">
-        {/* TOP LEFT */}
-        <div className="absolute -top-20 -left-32">
-          <div className="relative h-[700px] w-[700px] opacity-[0.08]">
-            <Image src="/images/logo.png" alt="Background Logo" fill priority className="object-contain" />
+      {/* ════════════════════════════════════════
+          CAROUSEL — taller, fullscreen feel
+      ════════════════════════════════════════ */}
+      <section
+        className="relative w-full overflow-hidden"
+        style={{ height: "clamp(480px, 60vw, 720px)" }}
+      >
+        {/* Background images */}
+        {slides.map((s, i) => (
+          <div
+            key={s.src}
+            className="absolute inset-0"
+            style={{
+              zIndex:     i === current ? 2 : i === prev ? 1 : 0,
+              opacity:    i === current ? 1 : 0,
+              transition: "opacity 1s ease",
+            }}
+          >
+            <Image src={s.src} alt={s.alt} fill priority={i === 0} sizes="100vw" className="object-cover" />
+          </div>
+        ))}
+
+        {/* Overlay */}
+        <div className="absolute inset-0 z-10" style={{ background: "rgba(40,4,4,0.62)" }} />
+
+        {/* Gradient fade into the info bar below */}
+        <div
+          className="absolute inset-x-0 bottom-0 z-10 h-28 pointer-events-none"
+          style={{ background: "linear-gradient(to top, rgba(2,2,80,0.95) 0%, transparent 100%)" }}
+        />
+
+        {/* Left arrow */}
+        <button
+          onClick={goPrev}
+          aria-label="Previous"
+          className="absolute left-3 top-1/2 -translate-y-1/2 z-30 flex h-9 w-9 items-center justify-center rounded-full border border-white/50 bg-transparent text-white hover:bg-white/15 transition-colors"
+        >
+          <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+
+        {/* Right arrow */}
+        <button
+          onClick={goNext}
+          aria-label="Next"
+          className="absolute right-3 top-1/2 -translate-y-1/2 z-30 flex h-9 w-9 items-center justify-center rounded-full border border-white/50 bg-transparent text-white hover:bg-white/15 transition-colors"
+        >
+          <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+
+        {/* Animated text content */}
+        <div
+          style={{
+            opacity:    textVisible ? 1 : 0,
+            transform:  textVisible ? "translateY(0)" : "translateY(8px)",
+            transition: "opacity 0.35s ease, transform 0.35s ease",
+            position:   "absolute",
+            inset:      0,
+            zIndex:     20,
+          }}
+        >
+          {slide.kind === "cards"
+            ? <CardsContent slide={slide} />
+            : <TextContent  slide={slide} />
+          }
+        </div>
+
+        {/* Dots — sit above the gradient fade */}
+        <div
+          className="absolute bottom-5 z-30 flex items-center gap-2"
+          style={{ left: "clamp(48px, 6vw, 90px)" }}
+        >
+          {slides.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => go(i)}
+              aria-label={`Slide ${i + 1}`}
+              style={{
+                width:        i === current ? "22px" : "7px",
+                height:       "7px",
+                borderRadius: "4px",
+                background:   i === current ? "white" : "rgba(255,255,255,0.35)",
+                border:       "none",
+                padding:      0,
+                cursor:       "pointer",
+                transition:   "width 0.3s ease, background 0.3s ease",
+              }}
+            />
+          ))}
+        </div>
+      </section>
+
+      {/* ════════════════════════════════════════
+          INFO BAR — stats + quick links
+      ════════════════════════════════════════ */}
+      <div className="w-full bg-[#02026e]">
+
+        {/* Stats row */}
+        <div className="border-b border-white/10">
+          <div className="mx-auto max-w-[1400px] px-6 sm:px-10 lg:px-16">
+            <div className="grid grid-cols-2 sm:grid-cols-4 divide-x divide-white/10">
+              {stats.map(({ icon: Icon, value, label, href }) => (
+                <Link
+                  key={label}
+                  href={href}
+                  className="group flex items-center gap-3 px-4 py-5 hover:bg-white/5 transition-colors"
+                >
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white/10 group-hover:bg-white/20 transition-colors">
+                    <Icon className="h-4 w-4 text-white/70" />
+                  </div>
+                  <div>
+                    <div className="text-[1.25rem] font-extrabold leading-none text-white tracking-tight">
+                      {value}
+                    </div>
+                    <div className="mt-0.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/45">
+                      {label}
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
           </div>
         </div>
-      
-      </div>
 
-      <div className="absolute inset-0 bg-white" />
-      <div className="absolute inset-x-0 top-0 h-px bg-slate-200" />
+        {/* Quick links row */}
+        <div className="mx-auto max-w-[1400px] px-6 sm:px-10 lg:px-16">
+          <div className="flex flex-wrap items-center gap-x-1 gap-y-0 py-3">
+            {quickLinks.map((link, i) => (
+              <span key={link.label} className="flex items-center">
+                <Link
+                  href={link.href}
+                  className="px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-white/55 hover:text-white transition-colors duration-150 whitespace-nowrap"
+                >
+                  {link.label}
+                </Link>
+                {i < quickLinks.length - 1 && (
+                  <span className="text-white/20 text-[10px]">·</span>
+                )}
+              </span>
+            ))}
 
-      {/* ── ROW 1: heading + image ── */}
-      <div className="relative z-20 mx-auto max-w-[1700px] px-4 pt-4 md:px-6 lg:px-10 lg:pt-5">
-        <div className="flex flex-col lg:grid lg:grid-cols-[minmax(0,1.05fr)_minmax(720px,1fr)] lg:gap-14 items-start gap-8">
-
-          {/* LEFT — staggered entrance animations */}
-          <div className="max-w-3xl pt-2 flex flex-col">
-
-            {/* Badge — fades in first */}
-            <div
-              className="order-1 inline-flex items-center rounded-full border border-slate-200 bg-white px-4 py-2 text-[13px] font-semibold uppercase tracking-[0.24em] text-[#010150] shadow-[0_6px_18px_rgba(15,23,42,0.05)]"
-              style={{
-                animation: "heroFadeIn 0.5s ease both",
-                animationDelay: "0.1s",
-              }}
-            >
-              Africa × Australia · Two 2026 Conference Editions
-            </div>
-
-            {/* Heading — slides up */}
-            <h1
-              className="order-2 font-heading mt-3 max-w-2xl font-extrabold leading-[1.08] tracking-[-0.035em] text-slate-950"
-              style={{
-                animation: "heroFadeUp 0.65s cubic-bezier(0.22,1,0.36,1) both",
-                animationDelay: "0.2s",
-              }}
-            >
-              <span className="text-[#02026e]">Clean Energy Conference</span>
-            </h1>
-
-            {/* Paragraph — slides up after heading */}
-            <p
-              className="order-5 lg:order-3 mt-3 max-w-xl leading-6 text-black/80"
-              style={{
-                animation: "heroFadeUp 0.6s cubic-bezier(0.22,1,0.36,1) both",
-                animationDelay: "0.38s",
-              }}
-            >
-              Kigali & Perth editions bringing together policymakers, investors, and
-              industry leaders to accelerate clean energy transition and regional collaboration.
-            </p>
-
-            {/* Edition cards — slides up with shimmer hover */}
-            <div
-              className="order-3 lg:order-4 mt-5 grid grid-cols-2 gap-3"
-              style={{
-                animation: "heroFadeUp 0.6s cubic-bezier(0.22,1,0.36,1) both",
-                animationDelay: "0.5s",
-              }}
-            >
-              {editions.map((edition) => {
-                const isPerth = edition.name.includes("Perth");
-                return (
-                  <Link
-                    key={edition.name}
-                    href={edition.href}
-                    className="group relative block rounded-xl bg-white px-4 py-2.5 border transition-all duration-300 hover:scale-[1.02] overflow-hidden"
-                    style={{
-                      borderColor: isPerth ? "#6ee7b7" : "#93a4ff",
-                      boxShadow: isPerth
-                        ? "0 10px 28px rgba(16,185,129,0.14)"
-                        : "0 10px 28px rgba(17,64,196,0.16)",
-                    }}
-                    onMouseEnter={(e) => {
-                      const el = e.currentTarget as HTMLElement;
-                      el.style.animation = isPerth
-                        ? "borderPulseGreen 1.4s ease infinite"
-                        : "borderPulseBlue 1.4s ease infinite";
-                      el.style.boxShadow = isPerth
-                        ? "0 20px 60px rgba(16,185,129,0.30)"
-                        : "0 20px 60px rgba(17,64,196,0.32)";
-                    }}
-                    onMouseLeave={(e) => {
-                      const el = e.currentTarget as HTMLElement;
-                      el.style.animation = "";
-                      el.style.boxShadow = isPerth
-                        ? "0 10px 28px rgba(16,185,129,0.14)"
-                        : "0 10px 28px rgba(17,64,196,0.16)";
-                      el.style.borderColor = isPerth ? "#6ee7b7" : "#93a4ff";
-                    }}
-                  >
-                    {/* Shimmer sweep overlay */}
-                    <span
-                      className="pointer-events-none absolute top-0 h-full w-[55%] rotate-12 bg-white/40 blur-md opacity-0 group-hover:opacity-100"
-                      style={{
-                        transition: "opacity 0.3s ease",
-                      }}
-                      onAnimationEnd={() => {}}
-                      aria-hidden
-                    />
-                    {/* Animated shimmer via JS */}
-                    <span
-                      className="pointer-events-none absolute top-0 h-full w-[55%] rotate-12 bg-white/35 blur-md"
-                      style={{
-                        left: "-120%",
-                        transition: "none",
-                      }}
-                      ref={(node) => {
-                        if (!node) return;
-                        const parent = node.parentElement;
-                        if (!parent) return;
-                        parent.addEventListener("mouseenter", () => {
-                          node.style.transition = "left 0.65s ease";
-                          node.style.left = "120%";
-                        });
-                        parent.addEventListener("mouseleave", () => {
-                          node.style.transition = "none";
-                          node.style.left = "-120%";
-                        });
-                      }}
-                      aria-hidden
-                    />
-
-                    {/* Header row */}
-                    <div className="flex items-center justify-between">
-                      <p className={`text-[10px] font-bold uppercase tracking-[0.25em] ${edition.accent}`}>
-                        {edition.name.split(" ")[0]}
-                      </p>
-                      <span className="text-[12px] text-slate-400">
-                        {isPerth ? "AUS" : "RWA"}
-                      </span>
-                    </div>
-
-                    {/* Compact details */}
-                    <div className="mt-2 space-y-1 text-[13px] text-black/80 leading-snug">
-                      <div className="truncate">{edition.date}</div>
-                      <div className="truncate text-slate-500">{edition.venue.split(",")[0]}</div>
-                    </div>
-
-                    {/* Footer */}
-                    <div className="mt-2 flex items-center justify-between text-[12px] font-medium text-black/80">
-                      <span>Details</span>
-                      <span className="text-[#1140c4] transition-transform duration-300 group-hover:translate-x-1">
-                        →
-                      </span>
-                    </div>
-                  </Link>
-                );
-              })}
-            </div>
-
-            {/* CTA buttons — slides up last */}
-            <div
-              className="order-4 lg:order-5 mt-5 grid grid-cols-1 sm:grid-cols-2 gap-3"
-              style={{
-                animation: "heroFadeUp 0.6s cubic-bezier(0.22,1,0.36,1) both",
-                animationDelay: "0.64s",
-              }}
-            >
-              {/* PRIMARY CTA */}
+            {/* Right-side CTA */}
+            <div className="ml-auto">
               <a
                 href="/get-tickets"
-                className="group relative inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-base font-semibold text-white bg-gradient-to-r from-[#02026e] via-[#1140c4] to-[#02026e] bg-[length:200%_100%] bg-left shadow-[0_12px_35px_rgba(2,2,110,0.35)] transition-all duration-500 ease-out hover:bg-right hover:scale-[1.05] active:scale-[0.97] focus:outline-none focus:ring-2 focus:ring-[#1140c4]/60 focus:ring-offset-2"
-                onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLElement).style.animation =
-                    "ctaPulseGlow 2s ease infinite";
-                }}
-                onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLElement).style.animation = "";
-                }}
+                className="group relative inline-flex items-center gap-1.5 overflow-hidden rounded-full bg-white px-5 py-1.5 text-[11px] font-bold uppercase tracking-[0.16em] text-[#02026e] transition-all duration-300 hover:scale-105 hover:bg-white/90 active:scale-95"
+                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = "0 8px 28px rgba(255,255,255,0.35)"; }}
+                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = ""; }}
               >
-                {/* Light sweep */}
-                <span className="absolute inset-0 overflow-hidden rounded-full">
-                  <span className="absolute -left-[120%] top-0 h-full w-[60%] rotate-12 bg-white/20 blur-md transition-all duration-700 group-hover:left-[120%]" />
-                </span>
+                <span className="pointer-events-none absolute -left-[120%] top-0 h-full w-[60%] rotate-12 bg-[#02026e]/10 blur-md transition-[left] duration-700 group-hover:left-[120%]" />
                 <span className="relative z-10">Register Now</span>
-                <ArrowRight className="relative z-10 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                <ArrowRight className="relative z-10 h-3 w-3 transition-transform duration-200 group-hover:translate-x-0.5" />
               </a>
-
-              {/* SECONDARY CTA */}
-              <a
-                href="/event/programme"
-                className="group relative inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-base font-semibold text-[#02026e] bg-white/70 backdrop-blur-md border border-[#02026e]/20 shadow-[0_10px_30px_rgba(2,2,110,0.12)] transition-all duration-300 hover:bg-white hover:border-[#02026e]/40 hover:shadow-[0_14px_45px_rgba(2,2,110,0.18)] hover:scale-[1.04] active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-[#02026e]/40 focus:ring-offset-2"
-              >
-                View Programme
-              </a>
-
-              {/* TERTIARY CTA */}
-              <Link
-                href="/partners/become-a-partner"
-                className="group relative inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-base font-semibold text-[#1f1f1f] bg-gradient-to-r from-[#d4af00] via-[#fad202] to-[#d4af00] bg-[length:200%_100%] bg-left shadow-[0_12px_35px_rgba(250,210,2,0.30)] transition-all duration-500 ease-out hover:bg-right hover:scale-[1.05] active:scale-[0.97] focus:outline-none focus:ring-2 focus:ring-[#fad202]/50 focus:ring-offset-2"
-                onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLElement).style.animation =
-                    "ctaGoldPulse 2s ease infinite";
-                }}
-                onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLElement).style.animation = "";
-                }}
-              >
-                {/* Light sweep */}
-                <span className="absolute inset-0 overflow-hidden rounded-full">
-                  <span className="absolute -left-[120%] top-0 h-full w-[60%] rotate-12 bg-white/25 blur-md transition-all duration-700 group-hover:left-[120%]" />
-                </span>
-                <span className="relative z-10">Become a Partner</span>
-                <ArrowRight className="relative z-10 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-              </Link>
-            </div>
-          </div>
-
-          {/* RIGHT — cinematic visual */}
-          <div className="relative flex justify-center lg:justify-end lg:pt-2">
-            <div className="w-full max-w-[1100px] aspect-[18/9]">
-              <CinematicHeroVisual />
             </div>
           </div>
         </div>
-      </div>
 
-      {/* ── CONFERENCE MOMENTS ── */}
-      <div className="-mt-2 lg:-mt-6">
-        <ConferenceMomentsCarousel />
       </div>
-    </section>
+    </div>
   );
 }
