@@ -294,7 +294,7 @@ export function HeroSection() {
   const slide = slides[current];
 
   return (
-    <div className="w-full">
+    <div className="w-full pt-24">
 
       {/* ════════════════════════════════════════
           CAROUSEL — taller, fullscreen feel
