@@ -5,7 +5,6 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { CalendarDays, MapPin, ArrowRight, Users, Globe, Mic, Building2 } from "lucide-react";
 
-// ── Inject keyframes once on the client ──────────────────────────────────────
 const injectStyles = (() => {
   let done = false;
   return () => {
@@ -15,7 +14,6 @@ const injectStyles = (() => {
     el.textContent = [
       "@keyframes ctaPulseGlow{0%,100%{box-shadow:0 12px 35px rgba(2,2,110,.55)}50%{box-shadow:0 18px 55px rgba(17,64,196,.75)}}",
       "@keyframes ctaGoldPulse{0%,100%{box-shadow:0 12px 35px rgba(250,210,2,.45)}50%{box-shadow:0 20px 60px rgba(250,210,2,.65)}}",
-      "@keyframes shimmer{0%{left:-120%}100%{left:120%}}",
     ].join("");
     document.head.appendChild(el);
   };
@@ -36,14 +34,7 @@ type CardsSlide = {
   alt: string;
   headline: string;
   sub: string;
-  editions: {
-    name: string;
-    date: string;
-    venue: string;
-    country: string;
-    href: string;
-    color: string;
-  }[];
+  editions: { name: string; date: string; venue: string; country: string; href: string; color: string }[];
   buttons: { label: string; href: string; style: "primary" | "outline" | "gold" }[];
 };
 
@@ -125,19 +116,19 @@ const slides: Slide[] = [
 ];
 
 const stats = [
-  { icon: Users,    value: "2,000+", label: "Delegates",      href: "/about" },
-  { icon: Globe,    value: "40+",    label: "Countries",       href: "/about" },
-  { icon: Mic,      value: "80+",    label: "Speakers",        href: "/speakers" },
-  { icon: Building2,value: "2",      label: "Host Cities",     href: "/conference" },
+  { icon: Users,     value: "2,000+", label: "Delegates",  href: "/about" },
+  { icon: Globe,     value: "40+",    label: "Countries",  href: "/about" },
+  { icon: Mic,       value: "80+",    label: "Speakers",   href: "/speakers" },
+  { icon: Building2, value: "2",      label: "Host Cities",href: "/conference" },
 ];
 
 const quickLinks = [
-  { label: "Register",       href: "/get-tickets" },
-  { label: "Programme",      href: "/event/programme" },
-  { label: "Speakers",       href: "/speakers" },
+  { label: "Register",         href: "/get-tickets" },
+  { label: "Programme",        href: "/event/programme" },
+  { label: "Speakers",         href: "/speakers" },
   { label: "Become a Partner", href: "/partners/become-a-partner" },
-  { label: "Kigali Edition", href: "/conference?edition=kigali" },
-  { label: "Perth Edition",  href: "/conference?edition=perth" },
+  { label: "Kigali Edition",   href: "/conference?edition=kigali" },
+  { label: "Perth Edition",    href: "/conference?edition=perth" },
 ];
 
 const INTERVAL = 6000;
@@ -146,83 +137,75 @@ function CardsContent({ slide }: { slide: CardsSlide }) {
   return (
     <div
       className="absolute inset-0 z-20 flex flex-col justify-center"
-      style={{ paddingLeft: "clamp(48px, 6vw, 90px)", paddingRight: "clamp(48px, 6vw, 90px)" }}
+      style={{ paddingLeft: "clamp(48px,6vw,90px)", paddingRight: "clamp(48px,6vw,90px)" }}
     >
-      <h1
-        className="font-heading font-bold text-white"
-        style={{ fontSize: "clamp(1.5rem, 3vw, 2.4rem)", lineHeight: 1.08, whiteSpace: "pre-line" }}
-      >
+      <h1 className="font-heading font-bold text-white" style={{ fontSize: "clamp(1.5rem,3vw,2.4rem)", lineHeight: 1.08, whiteSpace: "pre-line" }}>
         {slide.headline}
       </h1>
-      <p className="mt-1.5 text-white/75 max-w-sm" style={{ fontSize: "clamp(0.75rem, 1vw, 0.88rem)" }}>
+      <p className="mt-1.5 text-white/75 max-w-sm" style={{ fontSize: "clamp(0.75rem,1vw,0.88rem)" }}>
         {slide.sub}
       </p>
+
       <div className="mt-4 flex flex-wrap gap-3">
         {slide.editions.map((ed) => (
-          <Link
-            key={ed.name}
-            href={ed.href}
-            className="group flex flex-col rounded-xl border border-white/25 bg-white/10 backdrop-blur-sm px-4 py-3 min-w-[170px] hover:bg-white/20 transition-all duration-200 hover:scale-[1.03]"
+          <Link key={ed.name} href={ed.href}
+            className="group flex flex-col rounded-xl border border-white/25 backdrop-blur-sm px-4 py-3 min-w-[170px] transition-all duration-200 hover:scale-[1.03]"
+            style={{ background: "rgba(255,255,255,0.10)" }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.20)"; }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.10)"; }}
           >
             <div className="flex items-center justify-between mb-1.5">
               <span className="text-[10px] font-bold uppercase tracking-[0.22em]" style={{ color: ed.color }}>
                 {ed.name.replace(" Edition", "")}
               </span>
-              <span className="text-[10px] text-white/40 font-mono">{ed.country}</span>
+              <span className="text-[10px] font-mono" style={{ color: "rgba(255,255,255,0.40)" }}>{ed.country}</span>
             </div>
-            <div className="flex items-center gap-1.5 text-[12px] text-white/85 font-medium">
-              <CalendarDays className="h-3 w-3 text-white/45 shrink-0" />
+            <div className="flex items-center gap-1.5 text-[12px] font-medium" style={{ color: "rgba(255,255,255,0.85)" }}>
+              <CalendarDays className="h-3 w-3 shrink-0" style={{ color: "rgba(255,255,255,0.45)" }} />
               {ed.date}
             </div>
-            <div className="mt-0.5 flex items-center gap-1.5 text-[11px] text-white/50">
+            <div className="mt-0.5 flex items-center gap-1.5 text-[11px]" style={{ color: "rgba(255,255,255,0.50)" }}>
               <MapPin className="h-3 w-3 shrink-0" />
               {ed.venue.split(",")[0]}
             </div>
-            <div className="mt-2 flex items-center gap-1 text-[11px] font-semibold text-white/50 group-hover:text-white/80 transition-colors">
+            <div className="mt-2 flex items-center gap-1 text-[11px] font-semibold transition-colors" style={{ color: "rgba(255,255,255,0.50)" }}>
               Details <ArrowRight className="h-3 w-3" />
             </div>
           </Link>
         ))}
       </div>
+
       <div className="mt-4 flex flex-wrap gap-2.5">
         {slide.buttons.map((btn) => {
-          if (btn.style === "primary") {
-            return (
-              <Link
-                key={btn.label}
-                href={btn.href}
-                className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full border border-white/70 bg-transparent px-5 py-2 text-[11px] font-bold uppercase tracking-[0.16em] text-white transition-all duration-300 hover:scale-105 hover:bg-white hover:text-black active:scale-95"
-                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.animation = "ctaPulseGlow 2s ease infinite"; }}
-                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.animation = ""; }}
-              >
-                <span className="pointer-events-none absolute -left-[120%] top-0 h-full w-[60%] rotate-12 bg-white/20 blur-md transition-[left] duration-700 group-hover:left-[120%]" />
-                <span className="relative z-10">{btn.label}</span>
-                <ArrowRight className="relative z-10 h-3 w-3 transition-transform duration-200 group-hover:translate-x-0.5" />
-              </Link>
-            );
-          }
-          if (btn.style === "gold") {
-            return (
-              <Link
-                key={btn.label}
-                href={btn.href}
-                className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full px-5 py-2 text-[11px] font-bold uppercase tracking-[0.16em] text-[#1a1200] transition-all duration-300 hover:scale-105 active:scale-95"
-                style={{ background: "linear-gradient(135deg,#d4af00,#fad202)", boxShadow: "0 6px 20px rgba(250,210,2,0.35)" }}
-                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.animation = "ctaGoldPulse 2s ease infinite"; }}
-                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.animation = ""; (e.currentTarget as HTMLElement).style.boxShadow = "0 6px 20px rgba(250,210,2,0.35)"; }}
-              >
-                <span className="pointer-events-none absolute -left-[120%] top-0 h-full w-[60%] rotate-12 bg-white/30 blur-md transition-[left] duration-700 group-hover:left-[120%]" />
-                <span className="relative z-10">{btn.label}</span>
-                <ArrowRight className="relative z-10 h-3 w-3 transition-transform duration-200 group-hover:translate-x-0.5" />
-              </Link>
-            );
-          }
-          // outline
+          if (btn.style === "primary") return (
+            <Link key={btn.label} href={btn.href}
+              className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full border border-white/70 bg-transparent px-5 py-2 text-[11px] font-bold uppercase tracking-[0.16em] text-white transition-all duration-300 hover:scale-105 hover:bg-white hover:text-black active:scale-95"
+              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.animation = "ctaPulseGlow 2s ease infinite"; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.animation = ""; }}
+            >
+              <span className="pointer-events-none absolute -left-[120%] top-0 h-full w-[60%] rotate-12 bg-white/20 blur-md transition-[left] duration-700 group-hover:left-[120%]" />
+              <span className="relative z-10">{btn.label}</span>
+              <ArrowRight className="relative z-10 h-3 w-3 transition-transform duration-200 group-hover:translate-x-0.5" />
+            </Link>
+          );
+          if (btn.style === "gold") return (
+            <Link key={btn.label} href={btn.href}
+              className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full px-5 py-2 text-[11px] font-bold uppercase tracking-[0.16em] text-[#1a1200] transition-all duration-300 hover:scale-105 active:scale-95"
+              style={{ background: "linear-gradient(135deg,#d4af00,#fad202)", boxShadow: "0 6px 20px rgba(250,210,2,0.35)" }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.animation = "ctaGoldPulse 2s ease infinite"; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.animation = ""; (e.currentTarget as HTMLElement).style.boxShadow = "0 6px 20px rgba(250,210,2,0.35)"; }}
+            >
+              <span className="pointer-events-none absolute -left-[120%] top-0 h-full w-[60%] rotate-12 bg-white/30 blur-md transition-[left] duration-700 group-hover:left-[120%]" />
+              <span className="relative z-10">{btn.label}</span>
+              <ArrowRight className="relative z-10 h-3 w-3 transition-transform duration-200 group-hover:translate-x-0.5" />
+            </Link>
+          );
           return (
-            <Link
-              key={btn.label}
-              href={btn.href}
-              className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full border border-white/40 bg-white/10 px-5 py-2 text-[11px] font-bold uppercase tracking-[0.16em] text-white backdrop-blur-sm transition-all duration-200 hover:scale-105 hover:bg-white/25 active:scale-95"
+            <Link key={btn.label} href={btn.href}
+              className="group relative inline-flex items-center gap-2 overflow-hidden rounded-full border border-white/40 px-5 py-2 text-[11px] font-bold uppercase tracking-[0.16em] text-white backdrop-blur-sm transition-all duration-200 hover:scale-105 active:scale-95"
+              style={{ background: "rgba(255,255,255,0.10)" }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.25)"; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.10)"; }}
             >
               <span className="pointer-events-none absolute -left-[120%] top-0 h-full w-[60%] rotate-12 bg-white/15 blur-md transition-[left] duration-700 group-hover:left-[120%]" />
               <span className="relative z-10">{btn.label}</span>
@@ -239,15 +222,12 @@ function TextContent({ slide }: { slide: TextSlide }) {
   return (
     <div
       className="absolute inset-0 z-20 flex flex-col justify-center"
-      style={{ paddingLeft: "clamp(48px, 6vw, 90px)", paddingRight: "clamp(80px, 18vw, 260px)" }}
+      style={{ paddingLeft: "clamp(48px,6vw,90px)", paddingRight: "clamp(80px,18vw,260px)" }}
     >
-      <h1
-        className="font-heading font-bold text-white"
-        style={{ fontSize: "clamp(1.8rem, 4vw, 3.4rem)", lineHeight: 1.08, whiteSpace: "pre-line" }}
-      >
+      <h1 className="font-heading font-bold text-white" style={{ fontSize: "clamp(1.8rem,4vw,3.4rem)", lineHeight: 1.08, whiteSpace: "pre-line" }}>
         {slide.headline}
       </h1>
-      <p className="mt-3 text-white/85 leading-snug max-w-sm" style={{ fontSize: "clamp(0.78rem, 1.1vw, 0.95rem)" }}>
+      <p className="mt-3 leading-snug max-w-sm" style={{ fontSize: "clamp(0.78rem,1.1vw,0.95rem)", color: "rgba(255,255,255,0.85)" }}>
         {slide.sub}
       </p>
       <div className="mt-5">
@@ -294,43 +274,25 @@ export function HeroSection() {
   const slide = slides[current];
 
   return (
-    <div className="w-full pt-24">
+    <div style={{ paddingTop: "96px", background: "#ffffff" }}>
 
-      {/* ════════════════════════════════════════
-          CAROUSEL — taller, fullscreen feel
-      ════════════════════════════════════════ */}
-      <section
-        className="relative w-full overflow-hidden"
-        style={{ height: "clamp(480px, 60vw, 720px)" }}
-      >
-        {/* Background images */}
+      {/* ── CAROUSEL ── */}
+      <section className="relative w-full overflow-hidden" style={{ height: "clamp(480px,60vw,720px)" }}>
+
         {slides.map((s, i) => (
-          <div
-            key={s.src}
-            className="absolute inset-0"
-            style={{
-              zIndex:     i === current ? 2 : i === prev ? 1 : 0,
-              opacity:    i === current ? 1 : 0,
-              transition: "opacity 1s ease",
-            }}
-          >
+          <div key={s.src} className="absolute inset-0" style={{ zIndex: i === current ? 2 : i === prev ? 1 : 0, opacity: i === current ? 1 : 0, transition: "opacity 1s ease" }}>
             <Image src={s.src} alt={s.alt} fill priority={i === 0} sizes="100vw" className="object-cover" />
           </div>
         ))}
 
-        {/* Overlay */}
+        {/* dark maroon overlay */}
         <div className="absolute inset-0 z-10" style={{ background: "rgba(40,4,4,0.62)" }} />
 
-        {/* Subtle bottom fade so dots stay legible */}
-        <div
-          className="absolute inset-x-0 bottom-0 z-10 h-20 pointer-events-none"
-          style={{ background: "linear-gradient(to top, rgba(0,0,0,0.45) 0%, transparent 100%)" }}
-        />
+        {/* bottom fade for dots */}
+        <div className="absolute inset-x-0 bottom-0 z-10 h-20 pointer-events-none" style={{ background: "linear-gradient(to top,rgba(0,0,0,0.45),transparent)" }} />
 
         {/* Left arrow */}
-        <button
-          onClick={goPrev}
-          aria-label="Previous"
+        <button onClick={goPrev} aria-label="Previous"
           className="absolute left-3 top-1/2 -translate-y-1/2 z-30 flex h-9 w-9 items-center justify-center rounded-full border border-white/50 bg-transparent text-white hover:bg-white/15 transition-colors"
         >
           <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
@@ -339,9 +301,7 @@ export function HeroSection() {
         </button>
 
         {/* Right arrow */}
-        <button
-          onClick={goNext}
-          aria-label="Next"
+        <button onClick={goNext} aria-label="Next"
           className="absolute right-3 top-1/2 -translate-y-1/2 z-30 flex h-9 w-9 items-center justify-center rounded-full border border-white/50 bg-transparent text-white hover:bg-white/15 transition-colors"
         >
           <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
@@ -349,71 +309,43 @@ export function HeroSection() {
           </svg>
         </button>
 
-        {/* Animated text content */}
-        <div
-          style={{
-            opacity:    textVisible ? 1 : 0,
-            transform:  textVisible ? "translateY(0)" : "translateY(8px)",
-            transition: "opacity 0.35s ease, transform 0.35s ease",
-            position:   "absolute",
-            inset:      0,
-            zIndex:     20,
-          }}
-        >
-          {slide.kind === "cards"
-            ? <CardsContent slide={slide} />
-            : <TextContent  slide={slide} />
-          }
+        {/* Animated text */}
+        <div style={{ opacity: textVisible ? 1 : 0, transform: textVisible ? "translateY(0)" : "translateY(8px)", transition: "opacity 0.35s ease, transform 0.35s ease", position: "absolute", inset: 0, zIndex: 20 }}>
+          {slide.kind === "cards" ? <CardsContent slide={slide} /> : <TextContent slide={slide} />}
         </div>
 
-        {/* Dots — sit above the gradient fade */}
-        <div
-          className="absolute bottom-5 z-30 flex items-center gap-2"
-          style={{ left: "clamp(48px, 6vw, 90px)" }}
-        >
+        {/* Dots */}
+        <div className="absolute bottom-5 z-30 flex items-center gap-2" style={{ left: "clamp(48px,6vw,90px)" }}>
           {slides.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => go(i)}
-              aria-label={`Slide ${i + 1}`}
-              style={{
-                width:        i === current ? "22px" : "7px",
-                height:       "7px",
-                borderRadius: "4px",
-                background:   i === current ? "white" : "rgba(255,255,255,0.35)",
-                border:       "none",
-                padding:      0,
-                cursor:       "pointer",
-                transition:   "width 0.3s ease, background 0.3s ease",
-              }}
+            <button key={i} onClick={() => go(i)} aria-label={`Slide ${i + 1}`}
+              style={{ width: i === current ? "22px" : "7px", height: "7px", borderRadius: "4px", background: i === current ? "white" : "rgba(255,255,255,0.35)", border: "none", padding: 0, cursor: "pointer", transition: "width 0.3s ease, background 0.3s ease" }}
             />
           ))}
         </div>
       </section>
 
-      {/* ════════════════════════════════════════
-          INFO BAR — stats + quick links
-      ════════════════════════════════════════ */}
-      <div className="w-full bg-white border-t border-slate-100">
+      {/* ── INFO BAR — pure white ── */}
+      <div style={{ background: "#ffffff", borderTop: "1px solid #f1f5f9" }}>
 
-        {/* Stats row */}
-        <div className="border-b border-slate-100">
+        {/* Stats */}
+        <div style={{ borderBottom: "1px solid #f1f5f9" }}>
           <div className="mx-auto max-w-[1400px] px-6 sm:px-10 lg:px-16">
-            <div className="grid grid-cols-2 sm:grid-cols-4 divide-x divide-slate-100">
+            <div className="grid grid-cols-2 sm:grid-cols-4" style={{ borderLeft: "1px solid #f1f5f9" }}>
               {stats.map(({ icon: Icon, value, label, href }) => (
-                <Link
-                  key={label}
-                  href={href}
-                  className="group flex items-center gap-3 px-4 py-5 hover:bg-slate-50 transition-colors"
+                <Link key={label} href={href}
+                  className="flex items-center gap-3 px-6 py-5 transition-colors"
+                  style={{ borderRight: "1px solid #f1f5f9" }}
+                  onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = "#f8fafc"; }}
+                  onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = "transparent"; }}
                 >
-                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#02026e]/8 group-hover:bg-[#02026e]/14 transition-colors">
-                    <Icon className="h-4 w-4 text-[#02026e]" />
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full" style={{ background: "rgba(2,2,110,0.07)" }}>
+                    <Icon className="h-4 w-4" style={{ color: "#02026e" }} />
                   </div>
                   <div>
-                    <div className="text-[1.25rem] font-extrabold leading-none text-[#02026e] tracking-tight">
+                    <div className="font-extrabold leading-none tracking-tight" style={{ fontSize: "1.25rem", color: "#02026e" }}>
                       {value}
                     </div>
-                    <div className="mt-0.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-400">
+                    <div className="mt-0.5 font-semibold uppercase" style={{ fontSize: "10px", letterSpacing: "0.18em", color: "#94a3b8" }}>
                       {label}
                     </div>
                   </div>
@@ -423,28 +355,27 @@ export function HeroSection() {
           </div>
         </div>
 
-        {/* Quick links row */}
+        {/* Quick links */}
         <div className="mx-auto max-w-[1400px] px-6 sm:px-10 lg:px-16">
-          <div className="flex flex-wrap items-center gap-x-1 gap-y-0 py-3">
+          <div className="flex flex-wrap items-center gap-x-1 py-3">
             {quickLinks.map((link, i) => (
               <span key={link.label} className="flex items-center">
-                <Link
-                  href={link.href}
-                  className="px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-400 hover:text-[#02026e] transition-colors duration-150 whitespace-nowrap"
+                <Link href={link.href}
+                  className="px-3 py-1.5 font-semibold uppercase whitespace-nowrap transition-colors duration-150"
+                  style={{ fontSize: "11px", letterSpacing: "0.16em", color: "#94a3b8" }}
+                  onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "#02026e"; }}
+                  onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "#94a3b8"; }}
                 >
                   {link.label}
                 </Link>
-                {i < quickLinks.length - 1 && (
-                  <span className="text-slate-200 text-[10px]">·</span>
-                )}
+                {i < quickLinks.length - 1 && <span style={{ color: "#e2e8f0", fontSize: "10px" }}>·</span>}
               </span>
             ))}
 
-            {/* Right-side CTA */}
-            <div className="ml-auto">
-              <a
-                href="/get-tickets"
-                className="group relative inline-flex items-center gap-1.5 overflow-hidden rounded-full bg-[#02026e] px-5 py-1.5 text-[11px] font-bold uppercase tracking-[0.16em] text-white transition-all duration-300 hover:scale-105 active:scale-95"
+            <div style={{ marginLeft: "auto" }}>
+              <a href="/get-tickets"
+                className="group relative inline-flex items-center gap-1.5 overflow-hidden rounded-full font-bold uppercase transition-all duration-300 hover:scale-105 active:scale-95"
+                style={{ background: "#02026e", color: "#ffffff", padding: "6px 20px", fontSize: "11px", letterSpacing: "0.16em" }}
                 onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = "0 8px 28px rgba(2,2,110,0.35)"; }}
                 onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = ""; }}
               >
@@ -455,8 +386,8 @@ export function HeroSection() {
             </div>
           </div>
         </div>
-
       </div>
+
     </div>
   );
 }
