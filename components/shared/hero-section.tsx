@@ -321,10 +321,10 @@ export function HeroSection() {
         {/* Overlay */}
         <div className="absolute inset-0 z-10" style={{ background: "rgba(40,4,4,0.62)" }} />
 
-        {/* Gradient fade into the info bar below */}
+        {/* Subtle bottom fade so dots stay legible */}
         <div
-          className="absolute inset-x-0 bottom-0 z-10 h-28 pointer-events-none"
-          style={{ background: "linear-gradient(to top, rgba(2,2,80,0.95) 0%, transparent 100%)" }}
+          className="absolute inset-x-0 bottom-0 z-10 h-20 pointer-events-none"
+          style={{ background: "linear-gradient(to top, rgba(0,0,0,0.45) 0%, transparent 100%)" }}
         />
 
         {/* Left arrow */}
@@ -394,26 +394,26 @@ export function HeroSection() {
       {/* ════════════════════════════════════════
           INFO BAR — stats + quick links
       ════════════════════════════════════════ */}
-      <div className="w-full bg-[#02026e]">
+      <div className="w-full bg-white border-t border-slate-100">
 
         {/* Stats row */}
-        <div className="border-b border-white/10">
+        <div className="border-b border-slate-100">
           <div className="mx-auto max-w-[1400px] px-6 sm:px-10 lg:px-16">
-            <div className="grid grid-cols-2 sm:grid-cols-4 divide-x divide-white/10">
+            <div className="grid grid-cols-2 sm:grid-cols-4 divide-x divide-slate-100">
               {stats.map(({ icon: Icon, value, label, href }) => (
                 <Link
                   key={label}
                   href={href}
-                  className="group flex items-center gap-3 px-4 py-5 hover:bg-white/5 transition-colors"
+                  className="group flex items-center gap-3 px-4 py-5 hover:bg-slate-50 transition-colors"
                 >
-                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white/10 group-hover:bg-white/20 transition-colors">
-                    <Icon className="h-4 w-4 text-white/70" />
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#02026e]/8 group-hover:bg-[#02026e]/14 transition-colors">
+                    <Icon className="h-4 w-4 text-[#02026e]" />
                   </div>
                   <div>
-                    <div className="text-[1.25rem] font-extrabold leading-none text-white tracking-tight">
+                    <div className="text-[1.25rem] font-extrabold leading-none text-[#02026e] tracking-tight">
                       {value}
                     </div>
-                    <div className="mt-0.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/45">
+                    <div className="mt-0.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-400">
                       {label}
                     </div>
                   </div>
@@ -430,12 +430,12 @@ export function HeroSection() {
               <span key={link.label} className="flex items-center">
                 <Link
                   href={link.href}
-                  className="px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-white/55 hover:text-white transition-colors duration-150 whitespace-nowrap"
+                  className="px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-400 hover:text-[#02026e] transition-colors duration-150 whitespace-nowrap"
                 >
                   {link.label}
                 </Link>
                 {i < quickLinks.length - 1 && (
-                  <span className="text-white/20 text-[10px]">·</span>
+                  <span className="text-slate-200 text-[10px]">·</span>
                 )}
               </span>
             ))}
@@ -444,11 +444,11 @@ export function HeroSection() {
             <div className="ml-auto">
               <a
                 href="/get-tickets"
-                className="group relative inline-flex items-center gap-1.5 overflow-hidden rounded-full bg-white px-5 py-1.5 text-[11px] font-bold uppercase tracking-[0.16em] text-[#02026e] transition-all duration-300 hover:scale-105 hover:bg-white/90 active:scale-95"
-                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = "0 8px 28px rgba(255,255,255,0.35)"; }}
+                className="group relative inline-flex items-center gap-1.5 overflow-hidden rounded-full bg-[#02026e] px-5 py-1.5 text-[11px] font-bold uppercase tracking-[0.16em] text-white transition-all duration-300 hover:scale-105 active:scale-95"
+                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = "0 8px 28px rgba(2,2,110,0.35)"; }}
                 onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = ""; }}
               >
-                <span className="pointer-events-none absolute -left-[120%] top-0 h-full w-[60%] rotate-12 bg-[#02026e]/10 blur-md transition-[left] duration-700 group-hover:left-[120%]" />
+                <span className="pointer-events-none absolute -left-[120%] top-0 h-full w-[60%] rotate-12 bg-white/20 blur-md transition-[left] duration-700 group-hover:left-[120%]" />
                 <span className="relative z-10">Register Now</span>
                 <ArrowRight className="relative z-10 h-3 w-3 transition-transform duration-200 group-hover:translate-x-0.5" />
               </a>
